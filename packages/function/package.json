@@ -1,7 +1,7 @@
 {
   "name": "@ibrahimstudio/function",
   "version": "1.0.0",
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "This function package provides useful functions for handling common tasks in JavaScript applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,

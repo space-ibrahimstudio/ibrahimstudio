@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# @ibrahimstudio/function
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This package provides useful JavaScript functions for handling events and string manipulations.
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+You can install this package via npm:
 
-### `npm start`
+```sh
+npm i @ibrahimstudio/function
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Usage
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. `scrollView`
 
-### `npm test`
+The `scrollView` function allows you to smoothly scroll to a specific element on the page.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```javascript
+import { scrollView } from "@ibrahimstudio/function";
 
-### `npm run build`
+// Assuming the offset value based on the height of the Navbar
+// The target element to scroll to is the About section with the "about-us" id
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const Homepage = () => {
+  return (
+    <div id="homepage">
+      <nav>
+        <button onClick={() => scrollView(-70, "about-us")}>About Us</button>
+      </nav>
+      <div id="about-us">{/* About Content */}</div>
+    </div>
+  );
+};
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### scrollView Props
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Attribute | Type                | Description                                          | Default |
+| --------- | ------------------- | ---------------------------------------------------- | ------- |
+| `offset`  | _number_ (required) | The offset from the top of the element to scroll to. | -       |
+| `id`      | _string_ (required) | The ID of the element to scroll to.                  | -       |
 
-### `npm run eject`
+> Note: If the `offset` has no value, fill it with `0`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2. `toTitleCase`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The `toTitleCase` function converts a string to title case.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```javascript
+import { toTitleCase } from "@ibrahimstudio/function";
 
-## Learn More
+// Example usage:
+const title = toTitleCase("hello world");
+console.log(title); // Output: "Hello World"
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### toTitleCase Props
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Attribute | Type                | Description                          | Default |
+| --------- | ------------------- | ------------------------------------ | ------- |
+| `str`     | _string_ (required) | The string to convert to title Case. | -       |
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Contributing
 
-### Analyzing the Bundle Size
+Contributions are welcome! If you have any improvements, bug fixes, or features, feel free to open an issue or create a pull request on GitHub.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## License
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/space-ibrahimstudio/ibrahimstudio/blob/LICENSE) file for details.
