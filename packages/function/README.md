@@ -71,4 +71,4 @@ Contributions are welcome! If you have any improvements, bug fixes, or features,
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/space-ibrahimstudio/ibrahimstudio/blob/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/space-ibrahimstudio/ibrahimstudio/blob/master/LICENSE) file for details.
