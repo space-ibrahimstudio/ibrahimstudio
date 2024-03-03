@@ -1,0 +1,41 @@
+{
+  "name": "@ibrahimstudio/function",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "function",
+    "react",
+    "scrolltoview"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/space-ibrahimstudio/ibrahimstudio.git",
+    "directory": "packages/function"
+  },
+  "bugs": {
+    "url": "https://github.com/space-ibrahimstudio/ibrahimstudio/issues"
+  },
+  "author": "Ibrahim Space Studio",
+  "license": "MIT",
+  "homepage": "https://space.ibrahimstudio.co",
+  "devDependencies": {
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "typescript": "^5.3.3"
+  }
+}
