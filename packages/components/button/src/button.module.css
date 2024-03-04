@@ -1,0 +1,56 @@
+.buttonText {
+  position: relative;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.button {
+  --ibst-font-xsmall: 16px;
+  --ibst-padd-0x20: 0 20px;
+  --ibst-pixel-5: 5px;
+  --ibst-pixel-10: 10px;
+  --ibst-pixel-15: 15px;
+  --ibst-pixel-40: 40px;
+  --ibst-pixel-50: 50px;
+  --ibst-pixel-100: 100px;
+
+  cursor: pointer;
+  padding: var(--ibst-padd-0x20);
+  box-sizing: border-box;
+  flex-direction: row;
+  justify-content: center;
+  font-size: var(--ibst-font-xsmall);
+  font-weight: 600;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 701px) and (max-width: 1120px) {
+  .button {
+    --ibst-font-xsmall: 14px;
+    --ibst-padd-0x20: 0 17px;
+    --ibst-pixel-5: 4px;
+    --ibst-pixel-10: 8.5px;
+    --ibst-pixel-15: 13px;
+    --ibst-pixel-40: 34px;
+    --ibst-pixel-50: 43px;
+    --ibst-pixel-100: 85px;
+  }
+}
+
+@media (max-width: 700px) {
+  .button {
+    --ibst-font-xsmall: 11px;
+    --ibst-padd-0x20: 0 14px;
+    --ibst-pixel-5: 3.5px;
+    --ibst-pixel-10: 7px;
+    --ibst-pixel-15: 11px;
+    --ibst-pixel-40: 29px;
+    --ibst-pixel-50: 36px;
+    --ibst-pixel-100: 71.5px;
+  }
+}
