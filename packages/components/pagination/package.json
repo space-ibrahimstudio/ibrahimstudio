@@ -1,0 +1,59 @@
+{
+  "name": "@ibrahimstudio/pagination",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup -c",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "components",
+    "pagination",
+    "react"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/space-ibrahimstudio/ibrahimstudio.git",
+    "directory": "packages/components/pagination"
+  },
+  "bugs": {
+    "url": "https://github.com/space-ibrahimstudio/ibrahimstudio/issues"
+  },
+  "author": "Ibrahim Space Studio",
+  "license": "MIT",
+  "homepage": "https://space.ibrahimstudio.co",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  }
+}
