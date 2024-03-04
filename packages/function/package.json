@@ -33,6 +33,10 @@
   "author": "Ibrahim Space Studio",
   "license": "MIT",
   "homepage": "https://space.ibrahimstudio.co",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
   "devDependencies": {
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
