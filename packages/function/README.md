@@ -8,6 +8,8 @@ You can install this package via npm:
 
 ```sh
 npm i @ibrahimstudio/function
+# or
+yarn add @ibrahimstudio/function
 ```
 
 ## Usage
