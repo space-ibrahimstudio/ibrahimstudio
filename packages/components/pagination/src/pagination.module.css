@@ -1,0 +1,52 @@
+.paginationArrow {
+  cursor: pointer;
+  border: 0;
+  padding: 5px 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  height: 50px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--color-darkblue);
+  justify-content: center;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+
+.paginationArrow:hover {
+  background-color: var(--color-blue-5);
+}
+
+.paginationArrow.active {
+  color: var(--color-white);
+  background-color: var(--color-blue);
+}
+
+.paginationArrow.ellipsis:hover {
+  cursor: default;
+  background-color: transparent;
+}
+
+.paginationNumText {
+  position: relative;
+  font-size: 16px;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.pagination {
+  border-radius: 15px;
+  background-color: var(--color-white-second);
+  /* box-shadow: 0 23px 6px transparent, 0 14px 6px transparent,
+    0 8px 5px rgba(0, 0, 0, 0.02), 0 4px 4px rgba(0, 0, 0, 0.03),
+    0 1px 2px rgba(0, 0, 0, 0.03); */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  gap: 5px;
+}

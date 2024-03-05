@@ -1,4 +1,5 @@
 import React from "react";
+import { ChevronIcon } from "@ibrahimstudio/icons";
 import s from "./pagination.module.css";
 
 interface PaginationProps {
@@ -73,7 +74,7 @@ const Pagination: React.FC<PaginationProps> = ({
         style={{ display: currentPage === 1 ? "none" : "flex" }}
         onClick={prevPage}
       >
-        {/* <ChevronIcon width="7px" height="100%" direction="left" /> */}
+        <ChevronIcon width="7px" height="100%" direction="left" />
       </button>
       {renderPageNumbers()}
       <button
@@ -81,7 +82,7 @@ const Pagination: React.FC<PaginationProps> = ({
         style={{ display: currentPage === totalPages ? "none" : "flex" }}
         onClick={nextPage}
       >
-        {/* <ChevronIcon width="7px" height="100%" /> */}
+        <ChevronIcon width="7px" height="100%" />
       </button>
     </div>
   );
