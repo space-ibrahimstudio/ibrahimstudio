@@ -90,16 +90,16 @@ const Button: React.FC<ButtonProps> = ({
       borderRadius = "0";
       break;
     case "sm":
-      borderRadius = "var(--ibst-pixel-5)";
+      borderRadius = "var(--ibst-radius-5)";
       break;
     case "md":
-      borderRadius = "var(--ibst-pixel-10)";
+      borderRadius = "var(--ibst-radius-10)";
       break;
     case "lg":
-      borderRadius = "var(--ibst-pixel-15)";
+      borderRadius = "var(--ibst-radius-15)";
       break;
     case "full":
-      borderRadius = "var(--ibst-pixel-full)";
+      borderRadius = "var(--ibst-radius-full)";
       break;
     default:
       borderRadius = "0";
