@@ -1,69 +1,100 @@
-# @ibrahimstudio/function
+# @ibrahimstudio/button
 
-This package provides useful JavaScript functions for handling events and string manipulations.
+This package provides a customizable button component for React applications.
 
 ## Installation
 
 You can install this package via npm:
 
 ```sh
-npm i @ibrahimstudio/function
+npm i @ibrahimstudio/button
 # or
-yarn add @ibrahimstudio/function
+yarn add @ibrahimstudio/button
 ```
 
 ## Usage
 
-### 1. `scrollView`
-
-The `scrollView` function allows you to smoothly scroll to a specific element on the page.
+Import the Button component in your React application and use it as follows :
 
 ```javascript
-import { scrollView } from "@ibrahimstudio/function";
-
-// Assuming the offset value based on the height of the Navbar
-// The target element to scroll to is the About section with the "about-us" id
+import { Button } from "@ibrahimstudio/button";
 
 const Homepage = () => {
   return (
     <div id="homepage">
       <nav>
-        <button onClick={() => scrollView(-70, "about-us")}>About Us</button>
+        <Button buttonText="Click me!" />
       </nav>
-      <div id="about-us">{/* About Content */}</div>
     </div>
   );
 };
 ```
 
-### scrollView Props
+### 1. Button with `Submit` type
 
-| Attribute | Type                | Description                                          | Default |
-| --------- | ------------------- | ---------------------------------------------------- | ------- |
-| `offset`  | _number_ (required) | The offset from the top of the element to scroll to. | -       |
-| `id`      | _string_ (required) | The ID of the element to scroll to.                  | -       |
-
-> Note: If the `offset` has no value, fill it with `0`
+```javascript
+// add "submit" value to "type" attribute
+<Button buttonText="Login Now" type="submit" />
+```
 
 ---
 
-### 2. `toTitleCase`
-
-The `toTitleCase` function converts a string to title case.
+### 2. Button with `onClick` type
 
 ```javascript
-import { toTitleCase } from "@ibrahimstudio/function";
-
-// Example usage:
-const title = toTitleCase("hello world");
-console.log(title); // Output: "Hello World"
+// add "handleSubmit" logic to "onClick" attribute
+<Button buttonText="Login Now" onClick={handleSubmit} />
 ```
 
-### toTitleCase Props
+---
 
-| Attribute | Type                | Description                          | Default |
-| --------- | ------------------- | ------------------------------------ | ------- |
-| `str`     | _string_ (required) | The string to convert to title Case. | -       |
+### 3. Apply `styles` to Button
+
+- You can apply and use this Button as primary or secondary button. Fill the `size` attribute with `small` value to use it as secondary button :
+
+```javascript
+// JSX elements
+<Button buttonText="Register" size="small" />
+```
+
+- You can add a color value to the `color` and `bgColor` attribute to custom Button's color like this :
+
+```javascript
+// JSX elements
+<Button buttonText="Register" color="white" bgColor="blue" />
+```
+
+- Or, you can add style globally with configure this CSS variable in your `global.css` :
+
+```css
+:root {
+  --color-button: blue; /* button color */
+  --color-button-text: white; /* text color inside button */
+  --font-button: Inter; /* font family */
+}
+```
+
+---
+
+### Button Props
+
+| Attribute      | Type                                 | Description                                                    | Default |
+| -------------- | ------------------------------------ | -------------------------------------------------------------- | ------- |
+| `size`         | _string_                             | Specifies the size of the button.                              | -       |
+| `type`         | _string_                             | Indicates the type of button.                                  | -       |
+| `variant`      | _fill_ / _hollow_ / _line_           | Determines the visual style of the button.                     | _fill_  |
+| `radius`       | _none_ / _sm_ / _md_ / _lg_ / _full_ | Sets the border radius of the button.                          | _none_  |
+| `color`        | _string_                             | Specifies the text color of the button.                        | -       |
+| `bgColor`      | _string_                             | Specifies the background color of the button.                  | -       |
+| `buttonText`   | _string_ (required)                  | The text content to be displayed inside the button.            | -       |
+| `startContent` | _ReactNode_                          | Additional content to be displayed at the start of the button. | -       |
+| `endContent`   | _ReactNode_                          | Additional content to be displayed at the end of the button.   | -       |
+
+### Button Events
+
+| Attribute | Type                | Description                                       |
+| --------- | ------------------- | ------------------------------------------------- |
+| `onClick` | _MouseEventHandler_ | Function to be called when the button is clicked. |
 
 ---
 

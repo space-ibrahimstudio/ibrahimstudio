@@ -10,35 +10,74 @@
 .button {
   --ibst-font-xsmall: 16px;
   --ibst-padd-0x20: 0 20px;
-  --ibst-pixel-5: 5px;
-  --ibst-pixel-10: 10px;
-  --ibst-pixel-15: 15px;
+
+  --ibst-radius-5: 5px;
+  --ibst-radius-10: 10px;
+  --ibst-radius-15: 15px;
+  --ibst-radius-full: 999px;
+
   --ibst-pixel-40: 40px;
   --ibst-pixel-50: 50px;
-  --ibst-pixel-100: 100px;
 
   cursor: pointer;
+  position: relative;
   padding: var(--ibst-padd-0x20);
   box-sizing: border-box;
   flex-direction: row;
   justify-content: center;
+  gap: 15px;
   font-size: var(--ibst-font-xsmall);
   font-weight: 600;
-  font-family: inherit;
+  font-family: var(--font-button);
   display: flex;
   align-items: center;
+}
+
+.buttonRipple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: ripple 0.4s linear;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.buttonBlock {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  z-index: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.button:hover .buttonBlock {
+  opacity: 1;
 }
 
 @media (min-width: 701px) and (max-width: 1120px) {
   .button {
     --ibst-font-xsmall: 14px;
     --ibst-padd-0x20: 0 17px;
-    --ibst-pixel-5: 4px;
-    --ibst-pixel-10: 8.5px;
-    --ibst-pixel-15: 13px;
+
+    --ibst-radius-5: 4px;
+    --ibst-radius-10: 8.5px;
+    --ibst-radius-15: 13px;
+    --ibst-radius-full: 999px;
+
     --ibst-pixel-40: 34px;
     --ibst-pixel-50: 43px;
-    --ibst-pixel-100: 85px;
   }
 }
 
@@ -46,11 +85,13 @@
   .button {
     --ibst-font-xsmall: 11px;
     --ibst-padd-0x20: 0 14px;
-    --ibst-pixel-5: 3.5px;
-    --ibst-pixel-10: 7px;
-    --ibst-pixel-15: 11px;
+
+    --ibst-radius-5: 3.5px;
+    --ibst-radius-10: 7px;
+    --ibst-radius-15: 11px;
+    --ibst-radius-full: 999px;
+
     --ibst-pixel-40: 29px;
     --ibst-pixel-50: 36px;
-    --ibst-pixel-100: 71.5px;
   }
 }
