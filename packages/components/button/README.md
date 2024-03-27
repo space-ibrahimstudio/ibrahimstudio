@@ -130,31 +130,31 @@ You can customize the Button's content by choosing between "reg" (regular, has `
 
 ### 5.1. Button Props
 
-| Attribute        | Type                                 | Description                                                                                                                 | Default                  |
-| ---------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `id`             | _string_ (required)                  | Specifies the id of the button.                                                                                             | _button-id_              |
-| `size`           | _small_ / _reg_                      | Specifies the size of the button.                                                                                           | _reg_                    |
-| `type`           | _button_ / _submit_ / _route_        | Specifies the type of the button.                                                                                           | _button_                 |
-| `variant`        | _fill_ / _hollow_ / _line_           | Specifies the visual style variant of the button.                                                                           | _fill_                   |
-| `subVariant`     | _reg_ / _icon_                       | Specifies the sub-variant of the button, whether regular or icon.                                                           | _reg_                    |
-| `radius`         | _none_ / _sm_ / _md_ / _lg_ / _full_ | Specifies the border radius of the button.                                                                                  | _md_                     |
-| `color`          | _string_                             | Specifies the text color of the button.                                                                                     | var(--color-button-text) |
-| `bgColor`        | _string_                             | Specifies the background color of the button.                                                                               | var(--color-button)      |
-| `buttonText`     | _string_ (required)                  | The text content of the button.                                                                                             | _Click Me!_              |
-| `isLoading`      | _boolean_                            | Indicates whether the button is in a loading state.                                                                         | _false_                  |
-| `iconContent`    | _ReactNode_                          | Icon content to be displayed when "icon" value assigned to "subVariant" attribute.                                          | -                        |
-| `startContent`   | _ReactNode_                          | Additional content to be displayed at the start of the button.                                                              | -                        |
-| `endContent`     | _ReactNode_                          | Additional content to be displayed at the end of the button.                                                                | -                        |
-| `loadingContent` | _ReactNode_                          | Custom loading content to display when the button is in a loading state. If not provided, defaults to a "Loading ..." text. | -                        |
-| `to`             | _string_                             | The URL to navigate to if the button type is "route".                                                                       | -                        |
+| Attribute        | Type                                   | Description                                                                                                                 | Default                  |
+| ---------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `id`             | _string_ (required)                    | Specifies the id of the button.                                                                                             | _button-id_              |
+| `size`           | _small_ / _reg_                        | Specifies the size of the button.                                                                                           | _reg_                    |
+| `type`           | _button_ / _submit_ / _route_          | Specifies the type of the button.                                                                                           | _button_                 |
+| `variant`        | _fill_ / _hollow_ / _line_             | Specifies the visual style variant of the button.                                                                           | _fill_                   |
+| `subVariant`     | _reg_ / _icon_                         | Specifies the sub-variant of the button, whether regular or icon.                                                           | _reg_                    |
+| `radius`         | _none_ / _sm_ / _md_ / _lg_ / _full_   | Specifies the border radius of the button.                                                                                  | _md_                     |
+| `color`          | _string_                               | Specifies the text color of the button.                                                                                     | var(--color-button-text) |
+| `bgColor`        | _string_                               | Specifies the background color of the button.                                                                               | var(--color-button)      |
+| `buttonText`     | _string_ (required)                    | The text content of the button.                                                                                             | _Click Me!_              |
+| `isLoading`      | _boolean_                              | Indicates whether the button is in a loading state.                                                                         | _false_                  |
+| `iconContent`    | _ReactNode_                            | Icon content to be displayed when "icon" value assigned to "subVariant" attribute.                                          | -                        |
+| `startContent`   | _ReactNode_                            | Additional content to be displayed at the start of the button.                                                              | -                        |
+| `endContent`     | _ReactNode_                            | Additional content to be displayed at the end of the button.                                                                | -                        |
+| `loadingContent` | _ReactNode_                            | Custom loading content to display when the button is in a loading state. If not provided, defaults to a "Loading ..." text. | -                        |
+| `to`             | _string_ (required for "route" `type`) | The URL to navigate to if the button type is "route".                                                                       | -                        |
 
 ---
 
 ### 5.2. Button Event(s)
 
-| Attribute | Type                | Description                                                     |
-| --------- | ------------------- | --------------------------------------------------------------- |
-| `onClick` | _MouseEventHandler_ | Event handler function to be called when the button is clicked. |
+| Attribute | Type                           | Description                                                     |
+| --------- | ------------------------------ | --------------------------------------------------------------- |
+| `onClick` | _MouseEventHandler_ (required) | Event handler function to be called when the button is clicked. |
 
 ## 6. Contributing
 

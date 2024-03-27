@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import s from "./button.module.css";
 
 interface ButtonProps {
@@ -18,7 +18,7 @@ interface ButtonProps {
   endContent?: React.ReactNode;
   loadingContent?: React.ReactNode;
   onClick: () => void;
-  to?: string;
+  to: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -39,7 +39,6 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   to,
 }) => {
-  const navigate = useNavigate();
   const [ripple, setRipple] = useState<{
     left: number;
     top: number;
@@ -67,7 +66,7 @@ const Button: React.FC<ButtonProps> = ({
       handleRipple(event);
       onClick && onClick();
     } else if (type === "route" && to) {
-      navigate(to);
+      handleRipple(event);
     } else if (type === "submit") {
       handleRipple(event);
     } else {
@@ -149,41 +148,75 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <button
-      id={id}
-      className={s.button}
-      style={getButtonStyles()}
-      type={type === "submit" ? "submit" : "button"}
-      onClick={handleClick}
-    >
-      {subVariant === "icon" ? (
-        iconContent
-      ) : (
-        <React.Fragment>
-          {startContent && !isLoading && startContent}
-          {!isLoading ? (
-            <div className={s.buttonText}>{buttonText}</div>
-          ) : loadingContent ? (
-            loadingContent
+    <React.Fragment>
+      {type === "route" && to ? (
+        <Link id={id} className={s.button} style={getButtonStyles()} to={to}>
+          {subVariant === "icon" ? (
+            iconContent
           ) : (
-            <div className={s.buttonText}>Loading ...</div>
+            <React.Fragment>
+              {startContent && !isLoading && startContent}
+              {!isLoading ? (
+                <div className={s.buttonText}>{buttonText}</div>
+              ) : loadingContent ? (
+                loadingContent
+              ) : (
+                <div className={s.buttonText}>Loading ...</div>
+              )}
+              {endContent && !isLoading && endContent}
+            </React.Fragment>
           )}
-          {endContent && !isLoading && endContent}
-        </React.Fragment>
+          {ripple && (
+            <span
+              className={s.buttonRipple}
+              style={{
+                left: ripple.left,
+                top: ripple.top,
+                width: ripple.width,
+                height: ripple.height,
+              }}
+            />
+          )}
+          <div className={s.buttonBlock}></div>
+        </Link>
+      ) : (
+        <button
+          id={id}
+          className={s.button}
+          style={getButtonStyles()}
+          type={type === "submit" ? "submit" : "button"}
+          onClick={handleClick}
+        >
+          {subVariant === "icon" ? (
+            iconContent
+          ) : (
+            <React.Fragment>
+              {startContent && !isLoading && startContent}
+              {!isLoading ? (
+                <div className={s.buttonText}>{buttonText}</div>
+              ) : loadingContent ? (
+                loadingContent
+              ) : (
+                <div className={s.buttonText}>Loading ...</div>
+              )}
+              {endContent && !isLoading && endContent}
+            </React.Fragment>
+          )}
+          {ripple && (
+            <span
+              className={s.buttonRipple}
+              style={{
+                left: ripple.left,
+                top: ripple.top,
+                width: ripple.width,
+                height: ripple.height,
+              }}
+            />
+          )}
+          <div className={s.buttonBlock}></div>
+        </button>
       )}
-      {ripple && (
-        <span
-          className={s.buttonRipple}
-          style={{
-            left: ripple.left,
-            top: ripple.top,
-            width: ripple.width,
-            height: ripple.height,
-          }}
-        />
-      )}
-      <div className={s.buttonBlock}></div>
-    </button>
+    </React.Fragment>
   );
 };
 
