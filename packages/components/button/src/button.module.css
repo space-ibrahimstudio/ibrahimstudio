@@ -32,6 +32,11 @@
   display: flex;
   overflow: hidden;
   align-items: center;
+  outline: 0;
+}
+
+.button:focus {
+  outline: 0;
 }
 
 .buttonRipple {
