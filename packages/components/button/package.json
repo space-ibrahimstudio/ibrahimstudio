@@ -1,6 +1,6 @@
 {
   "name": "@ibrahimstudio/button",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "This package provides a customizable button component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -51,6 +51,7 @@
     "eslint-plugin-react": "^7.34.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "tslib": "^2.6.2",
