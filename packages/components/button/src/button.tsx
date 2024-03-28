@@ -23,7 +23,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   id = "button-id",
-  size = "small",
+  size = "reg",
   type = "button",
   variant = "fill",
   subVariant = "reg",
