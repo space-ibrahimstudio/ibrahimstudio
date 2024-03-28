@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import s from "./button.module.css";
 
@@ -39,24 +39,17 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   to,
 }) => {
-  const [ripple, setRipple] = useState<{
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-  }>();
+  const [coords, setCoords] = useState<{ x: number; y: number }>({
+    x: -1,
+    y: -1,
+  });
+  const [isRippling, setIsRippling] = useState<boolean>(false);
 
   const handleRipple = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const button = event.currentTarget;
-    setTimeout(() => {
-      const buttonRect = button.getBoundingClientRect();
-      const size = Math.max(buttonRect.width, buttonRect.height);
-      const left = event.clientX - buttonRect.left - size / 2;
-      const top = event.clientY - buttonRect.top - size / 2;
-      setRipple({ left, top, width: size, height: size });
-    }, 0);
+    const rect = event.currentTarget.getBoundingClientRect();
+    setCoords({ x: event.clientX - rect.left, y: event.clientY - rect.top });
   };
 
   const handleClick = (
@@ -147,6 +140,17 @@ const Button: React.FC<ButtonProps> = ({
     };
   };
 
+  useEffect(() => {
+    if (coords.x !== -1 && coords.y !== -1) {
+      setIsRippling(true);
+      setTimeout(() => setIsRippling(false), 300);
+    } else setIsRippling(false);
+  }, [coords]);
+
+  useEffect(() => {
+    if (!isRippling) setCoords({ x: -1, y: -1 });
+  }, [isRippling]);
+
   return (
     <React.Fragment>
       {type === "route" && to ? (
@@ -166,16 +170,16 @@ const Button: React.FC<ButtonProps> = ({
               {endContent && !isLoading && endContent}
             </React.Fragment>
           )}
-          {ripple && (
+          {isRippling ? (
             <span
               className={s.buttonRipple}
               style={{
-                left: ripple.left,
-                top: ripple.top,
-                width: ripple.width,
-                height: ripple.height,
+                left: coords.x,
+                top: coords.y,
               }}
             />
+          ) : (
+            ""
           )}
           <div className={s.buttonBlock}></div>
         </Link>
@@ -202,16 +206,16 @@ const Button: React.FC<ButtonProps> = ({
               {endContent && !isLoading && endContent}
             </React.Fragment>
           )}
-          {ripple && (
+          {isRippling ? (
             <span
               className={s.buttonRipple}
               style={{
-                left: ripple.left,
-                top: ripple.top,
-                width: ripple.width,
-                height: ripple.height,
+                left: coords.x,
+                top: coords.y,
               }}
             />
+          ) : (
+            ""
           )}
           <div className={s.buttonBlock}></div>
         </button>

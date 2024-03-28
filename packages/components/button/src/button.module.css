@@ -39,17 +39,29 @@
   outline: 0;
 }
 
-.buttonRipple {
+.button > .buttonRipple {
+  width: 20px;
+  height: 20px;
   position: absolute;
   border-radius: 50%;
+  display: block;
+  content: "";
+  opacity: 1;
   background-color: rgba(255, 255, 255, 0.4);
-  transform: scale(0);
   animation: ripple 0.4s linear;
 }
 
 @keyframes ripple {
-  to {
-    transform: scale(2);
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(10);
+    opacity: 0.375;
+  }
+  100% {
+    transform: scale(35);
     opacity: 0;
   }
 }
