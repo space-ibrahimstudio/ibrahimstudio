@@ -1,4 +1,9 @@
 .container {
+  --ibst-radius-10: 10px;
+  --ibst-radius-15: 15px;
+  --ibst-pixel-200: 200px;
+  --ibst-font-tooltip: 12px;
+
   position: relative;
   display: inline-flex;
   flex-direction: column;
@@ -57,7 +62,6 @@
 
 .button {
   --ibst-font-xsmall: 16px;
-  --ibst-font-tooltip: 12px;
   --ibst-padd-0x20: 0 20px;
   --ibst-radius-5: 5px;
   --ibst-radius-10: 10px;
@@ -65,7 +69,6 @@
   --ibst-radius-full: 999px;
   --ibst-pixel-40: 40px;
   --ibst-pixel-50: 50px;
-  --ibst-pixel-200: 200px;
 
   cursor: pointer;
   position: relative;
@@ -136,7 +139,6 @@
 @media (min-width: 701px) and (max-width: 1120px) {
   .button {
     --ibst-font-xsmall: 14px;
-    --ibst-font-tooltip: 10px;
     --ibst-padd-0x20: 0 17px;
     --ibst-radius-5: 4px;
     --ibst-radius-10: 8.5px;
@@ -144,14 +146,19 @@
     --ibst-radius-full: 999px;
     --ibst-pixel-40: 34px;
     --ibst-pixel-50: 43px;
+  }
+
+  .container {
+    --ibst-radius-10: 8.5px;
+    --ibst-radius-15: 13px;
     --ibst-pixel-200: 171px;
+    --ibst-font-tooltip: 10px;
   }
 }
 
 @media (max-width: 700px) {
   .button {
     --ibst-font-xsmall: 11px;
-    --ibst-font-tooltip: 8.5px;
     --ibst-padd-0x20: 0 14px;
     --ibst-radius-5: 3.5px;
     --ibst-radius-10: 7px;
@@ -159,6 +166,12 @@
     --ibst-radius-full: 999px;
     --ibst-pixel-40: 29px;
     --ibst-pixel-50: 36px;
+  }
+
+  .container {
+    --ibst-radius-10: 7px;
+    --ibst-radius-15: 11px;
     --ibst-pixel-200: 143px;
+    --ibst-font-tooltip: 8.5px;
   }
 }
