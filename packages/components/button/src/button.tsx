@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import s from "./button.module.css";
 
@@ -13,6 +13,8 @@ interface ButtonProps {
   bgColor?: string;
   buttonText: string;
   isLoading?: boolean;
+  tooltip?: boolean;
+  tooltipText: string;
   iconContent?: React.ReactNode;
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
@@ -32,6 +34,8 @@ const Button: React.FC<ButtonProps> = ({
   bgColor = "var(--color-button)",
   buttonText = "Click Me!",
   isLoading = false,
+  tooltip = false,
+  tooltipText = "Tooltip!",
   iconContent,
   startContent,
   endContent,
@@ -39,23 +43,29 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   to,
 }) => {
-  const [coords, setCoords] = useState<{ x: number; y: number }>({
+  // button state
+  const [coords, setCoords] = React.useState<{ x: number; y: number }>({
     x: -1,
     y: -1,
   });
-  const [isRippling, setIsRippling] = useState<boolean>(false);
-
+  const [isRippling, setIsRippling] = React.useState<boolean>(false);
+  // tooltip states & refs
+  const [hover, setHover] = React.useState<boolean>(false);
+  const hoverTimeout = React.useRef<number | null>(null);
+  const tooltipContentRef = React.useRef<HTMLDivElement | null>(null);
+  const tooltipRef = React.useRef<HTMLDivElement | null>(null);
+  // ripple effect handler
   const handleRipple = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setCoords({ x: event.clientX - rect.left, y: event.clientY - rect.top });
   };
-
+  // click event handler
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (type === "button") {
+    if (type === "button" || !to) {
       handleRipple(event);
       onClick && onClick();
     } else if (type === "route" && to) {
@@ -67,7 +77,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick && onClick();
     }
   };
-
+  // dynamic button style
   const getButtonStyles = () => {
     let buttonColor: string;
     let backgroundColor: string;
@@ -139,50 +149,197 @@ const Button: React.FC<ButtonProps> = ({
       height,
     };
   };
+  // delay timer for tooltip
+  const delay: number = 500;
+  // mouse event handler for tooltip
+  const handleMouseEnter = () => {
+    hoverTimeout.current = window.setTimeout(() => {
+      setHover(true);
+    }, delay);
+  };
 
-  useEffect(() => {
+  const handleMouseLeave = () => {
+    if (hoverTimeout.current) {
+      window.clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = null;
+    }
+    setHover(false);
+  };
+  // render tooltip position
+  const updateTooltipPosition = () => {
+    if (tooltipContentRef.current && tooltipRef.current) {
+      const rect = tooltipContentRef.current.getBoundingClientRect();
+
+      let { top, left, right } = rect;
+      const padding = 40;
+
+      if (left < 0 + padding) {
+        const newLeft = Math.abs(left) + padding;
+        tooltipContentRef.current.style.left = `${newLeft}px`;
+      } else if (right + padding > window.innerWidth) {
+        const newRight = right + padding - window.innerWidth;
+        tooltipContentRef.current.style.right = `${newRight}px`;
+      }
+
+      if (top < 0) {
+        tooltipRef.current.style.top = "unset";
+        tooltipRef.current.style.bottom = "0";
+        tooltipRef.current.style.transform = "translateY(calc(100% + 10px))";
+      }
+    }
+  };
+  // rippling effect for button
+  React.useEffect(() => {
     if (coords.x !== -1 && coords.y !== -1) {
       setIsRippling(true);
       setTimeout(() => setIsRippling(false), 300);
     } else setIsRippling(false);
   }, [coords]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isRippling) setCoords({ x: -1, y: -1 });
   }, [isRippling]);
+  // effect to handle tooltip resizing
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (hover) {
+        updateTooltipPosition();
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [hover]);
 
   return (
     <React.Fragment>
       {type === "route" && to ? (
-        <Link id={id} className={s.button} style={getButtonStyles()} to={to}>
-          {subVariant === "icon" ? (
-            iconContent
-          ) : (
-            <React.Fragment>
-              {startContent && !isLoading && startContent}
-              {!isLoading ? (
-                <div className={s.buttonText}>{buttonText}</div>
-              ) : loadingContent ? (
-                loadingContent
+        tooltip === true && tooltip ? (
+          <div
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={s.container}
+          >
+            {hover && (
+              <div ref={tooltipRef} className={s.tooltip}>
+                <div ref={tooltipContentRef} className={s.tooltipContent}>
+                  <div className={s.tooltipContentText}>{tooltipText}</div>
+                </div>
+              </div>
+            )}
+            <Link
+              id={id}
+              className={s.button}
+              style={getButtonStyles()}
+              to={to}
+            >
+              {subVariant === "icon" ? (
+                iconContent
               ) : (
-                <div className={s.buttonText}>Loading ...</div>
+                <React.Fragment>
+                  {startContent && !isLoading && startContent}
+                  {!isLoading ? (
+                    <div className={s.buttonText}>{buttonText}</div>
+                  ) : loadingContent ? (
+                    loadingContent
+                  ) : (
+                    <div className={s.buttonText}>Loading ...</div>
+                  )}
+                  {endContent && !isLoading && endContent}
+                </React.Fragment>
               )}
-              {endContent && !isLoading && endContent}
-            </React.Fragment>
+              {isRippling && (
+                <span
+                  className={s.buttonRipple}
+                  style={{
+                    left: coords.x,
+                    top: coords.y,
+                  }}
+                />
+              )}
+              <div className={s.buttonBlock}></div>
+            </Link>
+          </div>
+        ) : (
+          <Link id={id} className={s.button} style={getButtonStyles()} to={to}>
+            {subVariant === "icon" ? (
+              iconContent
+            ) : (
+              <React.Fragment>
+                {startContent && !isLoading && startContent}
+                {!isLoading ? (
+                  <div className={s.buttonText}>{buttonText}</div>
+                ) : loadingContent ? (
+                  loadingContent
+                ) : (
+                  <div className={s.buttonText}>Loading ...</div>
+                )}
+                {endContent && !isLoading && endContent}
+              </React.Fragment>
+            )}
+            {isRippling && (
+              <span
+                className={s.buttonRipple}
+                style={{
+                  left: coords.x,
+                  top: coords.y,
+                }}
+              />
+            )}
+            <div className={s.buttonBlock}></div>
+          </Link>
+        )
+      ) : tooltip === true && tooltip ? (
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={s.container}
+        >
+          {hover && (
+            <div ref={tooltipRef} className={s.tooltip}>
+              <div ref={tooltipContentRef} className={s.tooltipContent}>
+                <div className={s.tooltipContentText}>{tooltipText}</div>
+              </div>
+            </div>
           )}
-          {isRippling ? (
-            <span
-              className={s.buttonRipple}
-              style={{
-                left: coords.x,
-                top: coords.y,
-              }}
-            />
-          ) : (
-            ""
-          )}
-          <div className={s.buttonBlock}></div>
-        </Link>
+          <button
+            id={id}
+            className={s.button}
+            style={getButtonStyles()}
+            type={type === "submit" ? "submit" : "button"}
+            onClick={handleClick}
+          >
+            {subVariant === "icon" ? (
+              iconContent
+            ) : (
+              <React.Fragment>
+                {startContent && !isLoading && startContent}
+                {!isLoading ? (
+                  <div className={s.buttonText}>{buttonText}</div>
+                ) : loadingContent ? (
+                  loadingContent
+                ) : (
+                  <div className={s.buttonText}>Loading ...</div>
+                )}
+                {endContent && !isLoading && endContent}
+              </React.Fragment>
+            )}
+            {isRippling && (
+              <span
+                className={s.buttonRipple}
+                style={{
+                  left: coords.x,
+                  top: coords.y,
+                }}
+              />
+            )}
+            <div className={s.buttonBlock}></div>
+          </button>
+        </div>
       ) : (
         <button
           id={id}
@@ -206,7 +363,7 @@ const Button: React.FC<ButtonProps> = ({
               {endContent && !isLoading && endContent}
             </React.Fragment>
           )}
-          {isRippling ? (
+          {isRippling && (
             <span
               className={s.buttonRipple}
               style={{
@@ -214,8 +371,6 @@ const Button: React.FC<ButtonProps> = ({
                 top: coords.y,
               }}
             />
-          ) : (
-            ""
           )}
           <div className={s.buttonBlock}></div>
         </button>
