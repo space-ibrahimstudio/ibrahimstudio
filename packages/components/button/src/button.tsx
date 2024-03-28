@@ -170,7 +170,7 @@ const Button: React.FC<ButtonProps> = ({
     if (tooltipContentRef.current && tooltipRef.current) {
       const rect = tooltipContentRef.current.getBoundingClientRect();
 
-      let { top, left, right } = rect;
+      const { top, left, right } = rect;
       const padding = 40;
 
       if (left < 0 + padding) {
