@@ -227,7 +227,9 @@ const Button: React.FC<ButtonProps> = ({
             {hover && (
               <div ref={tooltipRef} className={s.tooltip}>
                 <div ref={tooltipContentRef} className={s.tooltipContent}>
-                  <div className={s.tooltipContentText}>{tooltipText}</div>
+                  <div className={s.tooltipContentText}>
+                    {isLoading ? "Loading ..." : tooltipText}
+                  </div>
                 </div>
               </div>
             )}
@@ -247,7 +249,13 @@ const Button: React.FC<ButtonProps> = ({
                   ) : loadingContent ? (
                     loadingContent
                   ) : (
-                    <div className={s.buttonText}>Loading ...</div>
+                    <React.Fragment>
+                      <div
+                        className={s.ringSpinner}
+                        style={{ borderTopColor: color }}
+                      ></div>
+                      <div className={s.buttonText}>Loading ...</div>
+                    </React.Fragment>
                   )}
                   {endContent && !isLoading && endContent}
                 </React.Fragment>
@@ -276,7 +284,13 @@ const Button: React.FC<ButtonProps> = ({
                 ) : loadingContent ? (
                   loadingContent
                 ) : (
-                  <div className={s.buttonText}>Loading ...</div>
+                  <React.Fragment>
+                    <div
+                      className={s.ringSpinner}
+                      style={{ borderTopColor: color }}
+                    ></div>
+                    <div className={s.buttonText}>Loading ...</div>
+                  </React.Fragment>
                 )}
                 {endContent && !isLoading && endContent}
               </React.Fragment>
@@ -302,7 +316,9 @@ const Button: React.FC<ButtonProps> = ({
           {hover && (
             <div ref={tooltipRef} className={s.tooltip}>
               <div ref={tooltipContentRef} className={s.tooltipContent}>
-                <div className={s.tooltipContentText}>{tooltipText}</div>
+                <div className={s.tooltipContentText}>
+                  {isLoading ? "Loading ..." : tooltipText}
+                </div>
               </div>
             </div>
           )}
@@ -323,7 +339,13 @@ const Button: React.FC<ButtonProps> = ({
                 ) : loadingContent ? (
                   loadingContent
                 ) : (
-                  <div className={s.buttonText}>Loading ...</div>
+                  <React.Fragment>
+                    <div
+                      className={s.ringSpinner}
+                      style={{ borderTopColor: color }}
+                    ></div>
+                    <div className={s.buttonText}>Loading ...</div>
+                  </React.Fragment>
                 )}
                 {endContent && !isLoading && endContent}
               </React.Fragment>
@@ -358,7 +380,13 @@ const Button: React.FC<ButtonProps> = ({
               ) : loadingContent ? (
                 loadingContent
               ) : (
-                <div className={s.buttonText}>Loading ...</div>
+                <React.Fragment>
+                  <div
+                    className={s.ringSpinner}
+                    style={{ borderTopColor: color }}
+                  ></div>
+                  <div className={s.buttonText}>Loading ...</div>
+                </React.Fragment>
               )}
               {endContent && !isLoading && endContent}
             </React.Fragment>

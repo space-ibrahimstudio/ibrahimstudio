@@ -1,3 +1,50 @@
+/* .ringSpinner {
+  --ibst-pixel-20: 20px;
+  --ibst-pixel-3: 3px;
+
+  display: inline-block;
+  position: relative;
+  width: var(--ibst-pixel-20);
+  height: var(--ibst-pixel-20);
+}
+
+.ring {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: var(--ibst-pixel-20);
+  height: var(--ibst-pixel-20);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+} */
+
+.ringSpinner {
+  --ibst-pixel-20: 20px;
+  --ibst-pixel-3: 3px;
+
+  width: var(--ibst-pixel-20);
+  height: var(--ibst-pixel-20);
+  border: var(--ibst-pixel-3) solid rgba(255, 255, 255, 0.35);
+  /* border-top-color: #1cd425; */
+  animation: ibstSpin 1s linear infinite;
+  border-radius: 100%;
+}
+
+@keyframes ibstSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* @keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} */
+
 .container {
   --ibst-radius-10: 10px;
   --ibst-radius-15: 15px;
@@ -69,6 +116,8 @@
   --ibst-radius-full: 999px;
   --ibst-pixel-40: 40px;
   --ibst-pixel-50: 50px;
+  --ibst-pixel-20: 20px;
+  --ibst-pixel-3: 3px;
 
   cursor: pointer;
   position: relative;
@@ -76,7 +125,7 @@
   box-sizing: border-box;
   flex-direction: row;
   justify-content: center;
-  gap: 15px;
+  gap: var(--ibst-radius-10);
   font-size: var(--ibst-font-xsmall);
   font-weight: 600;
   font-family: var(--font-button);
@@ -146,6 +195,8 @@
     --ibst-radius-full: 999px;
     --ibst-pixel-40: 34px;
     --ibst-pixel-50: 43px;
+    --ibst-pixel-20: 17px;
+    --ibst-pixel-3: 2.5px;
   }
 
   .container {
@@ -154,6 +205,11 @@
     --ibst-pixel-200: 171px;
     --ibst-font-tooltip: 10px;
   }
+
+  /* .ringSpinner {
+    --ibst-pixel-20: 17px;
+    --ibst-pixel-3: 2.5px;
+  } */
 }
 
 @media (max-width: 700px) {
@@ -166,6 +222,8 @@
     --ibst-radius-full: 999px;
     --ibst-pixel-40: 29px;
     --ibst-pixel-50: 36px;
+    --ibst-pixel-20: 14px;
+    --ibst-pixel-3: 2px;
   }
 
   .container {
@@ -174,4 +232,9 @@
     --ibst-pixel-200: 143px;
     --ibst-font-tooltip: 8.5px;
   }
+
+  /* .ringSpinner {
+    --ibst-pixel-20: 14px;
+    --ibst-pixel-3: 2px;
+  } */
 }
