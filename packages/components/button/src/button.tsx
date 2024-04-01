@@ -94,7 +94,7 @@ const Button: React.FC<ButtonProps> = ({
   const getButtonStyles = () => {
     let buttonColor: string;
     let backgroundColor: string;
-    let border: string;
+    let boxShadow: string;
     let borderRadius: string;
     let height: string;
 
@@ -102,27 +102,27 @@ const Button: React.FC<ButtonProps> = ({
       case "fill":
         buttonColor = color;
         backgroundColor = bgColor;
-        border = `1px solid ${bgColor}`;
+        boxShadow = `inset 0 0 0 1.5px ${bgColor}`;
         break;
       case "hollow":
         buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        border = "1px solid transparent";
+        boxShadow = "inset 0 0 0 1.5px transparent";
         break;
       case "line":
         buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        border = `1px solid ${color || bgColor}`;
+        boxShadow = `inset 0 0 0 1.5px ${color || bgColor}`;
         break;
       case "dashed":
         buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        border = `1px dashed ${color || bgColor}`;
+        boxShadow = `inset 0 0 0 1.5px ${color || bgColor}`;
         break;
       default:
         buttonColor = color;
         backgroundColor = bgColor;
-        border = `1px solid ${bgColor}`;
+        boxShadow = `inset 0 0 0 1.5px ${bgColor}`;
         break;
     }
 
@@ -163,7 +163,7 @@ const Button: React.FC<ButtonProps> = ({
       borderRadius,
       color: buttonColor,
       backgroundColor,
-      border,
+      boxShadow,
       height,
     };
   };
@@ -192,11 +192,11 @@ const Button: React.FC<ButtonProps> = ({
   let rippleColor: string;
 
   if (handleContrastColor(bgColor, -30) === bgColor) {
-    rippleColor = `rgba(255, 255, 255, 0.4)`;
-    blockBgColor = `rgba(255, 255, 255, 0.2)`;
+    rippleColor = `rgba(255, 255, 255, 0.25)`;
+    blockBgColor = `rgba(255, 255, 255, 0.15)`;
   } else {
-    rippleColor = `rgba(0, 0, 0, 0.4)`;
-    blockBgColor = `rgba(0, 0, 0, 0.2)`;
+    rippleColor = `rgba(0, 0, 0, 0.25)`;
+    blockBgColor = `rgba(0, 0, 0, 0.15)`;
   }
   // delay timer for tooltip
   const delay: number = 500;
@@ -289,14 +289,16 @@ const Button: React.FC<ButtonProps> = ({
               to={to}
             >
               {subVariant === "icon" ? (
-                iconContent
+                <div style={{ zIndex: "3" }}>{iconContent}</div>
               ) : (
                 <React.Fragment>
-                  {startContent && !isLoading && startContent}
+                  {startContent && !isLoading && (
+                    <div style={{ zIndex: "3" }}>{startContent}</div>
+                  )}
                   {!isLoading ? (
                     <div className={s.buttonText}>{buttonText}</div>
                   ) : loadingContent ? (
-                    loadingContent
+                    <div style={{ zIndex: "3" }}>{loadingContent}</div>
                   ) : (
                     <React.Fragment>
                       <div
@@ -306,7 +308,9 @@ const Button: React.FC<ButtonProps> = ({
                       <div className={s.buttonText}>Loading ...</div>
                     </React.Fragment>
                   )}
-                  {endContent && !isLoading && endContent}
+                  {endContent && !isLoading && (
+                    <div style={{ zIndex: "3" }}>{endContent}</div>
+                  )}
                 </React.Fragment>
               )}
               {isRippling && (
@@ -330,14 +334,16 @@ const Button: React.FC<ButtonProps> = ({
         ) : (
           <Link id={id} className={s.button} style={getButtonStyles()} to={to}>
             {subVariant === "icon" ? (
-              iconContent
+              <div style={{ zIndex: "3" }}>{iconContent}</div>
             ) : (
               <React.Fragment>
-                {startContent && !isLoading && startContent}
+                {startContent && !isLoading && (
+                  <div style={{ zIndex: "3" }}>{startContent}</div>
+                )}
                 {!isLoading ? (
                   <div className={s.buttonText}>{buttonText}</div>
                 ) : loadingContent ? (
-                  loadingContent
+                  <div style={{ zIndex: "3" }}>{loadingContent}</div>
                 ) : (
                   <React.Fragment>
                     <div
@@ -347,7 +353,9 @@ const Button: React.FC<ButtonProps> = ({
                     <div className={s.buttonText}>Loading ...</div>
                   </React.Fragment>
                 )}
-                {endContent && !isLoading && endContent}
+                {endContent && !isLoading && (
+                  <div style={{ zIndex: "3" }}>{endContent}</div>
+                )}
               </React.Fragment>
             )}
             {isRippling && (
@@ -392,14 +400,16 @@ const Button: React.FC<ButtonProps> = ({
             disabled={isDisabled}
           >
             {subVariant === "icon" ? (
-              iconContent
+              <div style={{ zIndex: "3" }}>{iconContent}</div>
             ) : (
               <React.Fragment>
-                {startContent && !isLoading && startContent}
+                {startContent && !isLoading && (
+                  <div style={{ zIndex: "3" }}>{startContent}</div>
+                )}
                 {!isLoading ? (
                   <div className={s.buttonText}>{buttonText}</div>
                 ) : loadingContent ? (
-                  loadingContent
+                  <div style={{ zIndex: "3" }}>{loadingContent}</div>
                 ) : (
                   <React.Fragment>
                     <div
@@ -409,7 +419,9 @@ const Button: React.FC<ButtonProps> = ({
                     <div className={s.buttonText}>Loading ...</div>
                   </React.Fragment>
                 )}
-                {endContent && !isLoading && endContent}
+                {endContent && !isLoading && (
+                  <div style={{ zIndex: "3" }}>{endContent}</div>
+                )}
               </React.Fragment>
             )}
             {isRippling && (
@@ -440,14 +452,16 @@ const Button: React.FC<ButtonProps> = ({
           disabled={isDisabled}
         >
           {subVariant === "icon" ? (
-            iconContent
+            <div style={{ zIndex: "3" }}>{iconContent}</div>
           ) : (
             <React.Fragment>
-              {startContent && !isLoading && startContent}
+              {startContent && !isLoading && (
+                <div style={{ zIndex: "3" }}>{startContent}</div>
+              )}
               {!isLoading ? (
                 <div className={s.buttonText}>{buttonText}</div>
               ) : loadingContent ? (
-                loadingContent
+                <div style={{ zIndex: "3" }}>{loadingContent}</div>
               ) : (
                 <React.Fragment>
                   <div
@@ -457,7 +471,9 @@ const Button: React.FC<ButtonProps> = ({
                   <div className={s.buttonText}>Loading ...</div>
                 </React.Fragment>
               )}
-              {endContent && !isLoading && endContent}
+              {endContent && !isLoading && (
+                <div style={{ zIndex: "3" }}>{endContent}</div>
+              )}
             </React.Fragment>
           )}
           {isRippling && (

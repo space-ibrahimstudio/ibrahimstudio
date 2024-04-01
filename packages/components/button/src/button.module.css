@@ -2,6 +2,7 @@
   --ibst-pixel-20: 20px;
   --ibst-pixel-3: 3px;
 
+  z-index: 3;
   width: var(--ibst-pixel-20);
   height: var(--ibst-pixel-20);
   border: var(--ibst-pixel-3) solid rgba(255, 255, 255, 0.35);
@@ -69,6 +70,7 @@
 }
 
 .buttonText {
+  z-index: 3;
   position: relative;
   font-size: inherit;
   font-weight: inherit;
@@ -111,7 +113,8 @@
   outline: 0;
 }
 
-.button > .buttonRipple {
+.buttonRipple {
+  z-index: 2;
   width: 20px;
   height: 20px;
   position: absolute;
@@ -147,7 +150,7 @@
   bottom: 0;
   margin: auto;
   overflow: hidden;
-  z-index: 0;
+  z-index: 1;
   transition: opacity 0.3s ease-in-out;
 }
 
