@@ -5,14 +5,16 @@ import s from "./button.module.css";
 interface ButtonProps {
   id: string;
   size?: "small" | "reg";
-  type?: "button" | "submit" | "route";
-  variant?: "fill" | "hollow" | "line";
+  type?: "button" | "submit" | "route" | "link";
+  variant?: "fill" | "hollow" | "line" | "dashed";
   subVariant?: "reg" | "icon";
   radius?: "none" | "sm" | "md" | "lg" | "full";
   color?: string;
   bgColor?: string;
   buttonText: string;
   isLoading?: boolean;
+  isDisabled?: boolean;
+  isNewTab?: boolean;
   tooltip?: boolean;
   tooltipText: string;
   iconContent?: React.ReactNode;
@@ -21,10 +23,11 @@ interface ButtonProps {
   loadingContent?: React.ReactNode;
   onClick: () => void;
   to: string;
+  href: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  id = "button-id",
+  id = "ibrahimstudio-default-id",
   size = "reg",
   type = "button",
   variant = "fill",
@@ -34,6 +37,8 @@ const Button: React.FC<ButtonProps> = ({
   bgColor = "var(--color-button)",
   buttonText = "Click Me!",
   isLoading = false,
+  isDisabled = false,
+  isNewTab = true,
   tooltip = false,
   tooltipText = "Tooltip!",
   iconContent,
@@ -42,6 +47,7 @@ const Button: React.FC<ButtonProps> = ({
   loadingContent,
   onClick,
   to,
+  href,
 }) => {
   // button state
   const [coords, setCoords] = React.useState<{ x: number; y: number }>({
@@ -65,13 +71,20 @@ const Button: React.FC<ButtonProps> = ({
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (type === "button" || !to) {
+    if (type === "button" && !to) {
       handleRipple(event);
       onClick && onClick();
     } else if (type === "route" && to) {
       handleRipple(event);
     } else if (type === "submit") {
       handleRipple(event);
+    } else if (type === "link" && href) {
+      handleRipple(event);
+      if (!isNewTab) {
+        window.location.href = href;
+      } else {
+        window.open(href, "_blank");
+      }
     } else {
       handleRipple(event);
       onClick && onClick();
@@ -92,14 +105,19 @@ const Button: React.FC<ButtonProps> = ({
         border = `1px solid ${bgColor}`;
         break;
       case "hollow":
-        buttonColor = color;
+        buttonColor = color || bgColor;
         backgroundColor = "transparent";
         border = "1px solid transparent";
         break;
       case "line":
-        buttonColor = color;
+        buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        border = `1px solid ${color}`;
+        border = `1px solid ${color || bgColor}`;
+        break;
+      case "dashed":
+        buttonColor = color || bgColor;
+        backgroundColor = "transparent";
+        border = `1px dashed ${color || bgColor}`;
         break;
       default:
         buttonColor = color;
@@ -149,6 +167,37 @@ const Button: React.FC<ButtonProps> = ({
       height,
     };
   };
+  // function to darken or lighten a color
+  const handleContrastColor = (color: string, percent: number): string => {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) + amt;
+    const B = ((num >> 8) & 0x00ff) + amt;
+    const G = (num & 0x0000ff) + amt;
+    return (
+      "#" +
+      (
+        0x1000000 +
+        (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+        (B < 255 ? (B < 1 ? 0 : B) : 255) * 0x100 +
+        (G < 255 ? (G < 1 ? 0 : G) : 255)
+      )
+        .toString(16)
+        .slice(1)
+    );
+  };
+
+  // calculate the background color
+  let blockBgColor: string;
+  let rippleColor: string;
+
+  if (handleContrastColor(bgColor, -30) === bgColor) {
+    rippleColor = `rgba(255, 255, 255, 0.4)`;
+    blockBgColor = `rgba(255, 255, 255, 0.2)`;
+  } else {
+    rippleColor = `rgba(0, 0, 0, 0.4)`;
+    blockBgColor = `rgba(0, 0, 0, 0.2)`;
+  }
   // delay timer for tooltip
   const delay: number = 500;
   // mouse event handler for tooltip
@@ -188,17 +237,6 @@ const Button: React.FC<ButtonProps> = ({
       }
     }
   };
-  // rippling effect for button
-  React.useEffect(() => {
-    if (coords.x !== -1 && coords.y !== -1) {
-      setIsRippling(true);
-      setTimeout(() => setIsRippling(false), 300);
-    } else setIsRippling(false);
-  }, [coords]);
-
-  React.useEffect(() => {
-    if (!isRippling) setCoords({ x: -1, y: -1 });
-  }, [isRippling]);
   // effect to handle tooltip resizing
   React.useEffect(() => {
     const handleResize = () => {
@@ -214,6 +252,17 @@ const Button: React.FC<ButtonProps> = ({
       window.removeEventListener("resize", handleResize);
     };
   }, [hover]);
+  // rippling effect for button
+  React.useEffect(() => {
+    if (coords.x !== -1 && coords.y !== -1) {
+      setIsRippling(true);
+      setTimeout(() => setIsRippling(false), 300);
+    } else setIsRippling(false);
+  }, [coords]);
+
+  React.useEffect(() => {
+    if (!isRippling) setCoords({ x: -1, y: -1 });
+  }, [isRippling]);
 
   return (
     <React.Fragment>
@@ -266,10 +315,16 @@ const Button: React.FC<ButtonProps> = ({
                   style={{
                     left: coords.x,
                     top: coords.y,
+                    backgroundColor: rippleColor,
                   }}
                 />
               )}
-              <div className={s.buttonBlock}></div>
+              {!isDisabled && !isLoading && (
+                <div
+                  className={s.buttonBlock}
+                  style={{ background: blockBgColor }}
+                ></div>
+              )}
             </Link>
           </div>
         ) : (
@@ -301,10 +356,16 @@ const Button: React.FC<ButtonProps> = ({
                 style={{
                   left: coords.x,
                   top: coords.y,
+                  backgroundColor: rippleColor,
                 }}
               />
             )}
-            <div className={s.buttonBlock}></div>
+            {!isDisabled && !isLoading && (
+              <div
+                className={s.buttonBlock}
+                style={{ background: blockBgColor }}
+              ></div>
+            )}
           </Link>
         )
       ) : tooltip === true && tooltip ? (
@@ -328,6 +389,7 @@ const Button: React.FC<ButtonProps> = ({
             style={getButtonStyles()}
             type={type === "submit" ? "submit" : "button"}
             onClick={handleClick}
+            disabled={isDisabled}
           >
             {subVariant === "icon" ? (
               iconContent
@@ -356,10 +418,16 @@ const Button: React.FC<ButtonProps> = ({
                 style={{
                   left: coords.x,
                   top: coords.y,
+                  backgroundColor: rippleColor,
                 }}
               />
             )}
-            <div className={s.buttonBlock}></div>
+            {!isDisabled && !isLoading && (
+              <div
+                className={s.buttonBlock}
+                style={{ background: blockBgColor }}
+              ></div>
+            )}
           </button>
         </div>
       ) : (
@@ -369,6 +437,7 @@ const Button: React.FC<ButtonProps> = ({
           style={getButtonStyles()}
           type={type === "submit" ? "submit" : "button"}
           onClick={handleClick}
+          disabled={isDisabled}
         >
           {subVariant === "icon" ? (
             iconContent
@@ -397,10 +466,16 @@ const Button: React.FC<ButtonProps> = ({
               style={{
                 left: coords.x,
                 top: coords.y,
+                backgroundColor: rippleColor,
               }}
             />
           )}
-          <div className={s.buttonBlock}></div>
+          {!isDisabled && !isLoading && (
+            <div
+              className={s.buttonBlock}
+              style={{ background: blockBgColor }}
+            ></div>
+          )}
         </button>
       )}
     </React.Fragment>
