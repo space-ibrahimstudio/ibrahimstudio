@@ -109,8 +109,23 @@
   outline: 0;
 }
 
-.button:focus {
+.button:focus,
+.button::before,
+.button::after,
+.button:active {
   outline: 0;
+}
+
+.button.full {
+  width: 100%;
+}
+
+.button.disabled {
+  cursor: not-allowed;
+}
+
+.button.loading {
+  cursor: progress;
 }
 
 .buttonRipple {
@@ -156,6 +171,75 @@
 
 .button:hover .buttonBlock {
   opacity: 1;
+}
+
+.dot1 {
+  animation: visibility 1.5s linear infinite;
+}
+
+@keyframes visibility {
+  0% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.dot2 {
+  animation: visibility2 1.5s linear infinite;
+}
+
+@keyframes visibility2 {
+  0% {
+    opacity: 0;
+  }
+  21% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.dot3 {
+  animation: visibility3 1.5s linear infinite;
+}
+
+@keyframes visibility3 {
+  0% {
+    opacity: 0;
+  }
+  43% {
+    opacity: 0;
+  }
+  44% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @media (min-width: 701px) and (max-width: 1120px) {

@@ -69,17 +69,30 @@ Add "route" value to `type` attribute, then add target route in `to` attribute
 <Button buttonText="About Us" type="route" to="/about-page" />
 ```
 
+---
+
+### 3.3. With `link` type
+
+Add "link" value to `type` attribute, then add target URL in `href` attribute
+
+```javascript
+// open link in new tab
+<Button buttonText="View Content" type="link" href="https://example.com" />
+// open link in current tab
+<Button buttonText="View Content" type="link" href="https://example.com" isNewtab={false} />
+```
+
 ## 4. Customizing styles of Button
 
 ### 4.1. Usage of `size` attribute
 
-You can apply and use this Button as primary or secondary button. Fill the `size` attribute with `small` value to use it as secondary button
+You can apply and use this Button as primary or secondary button. Fill the `size` attribute with `sm` value to use it as secondary button
 
 ```javascript
 // primary button (default)
 <Button buttonText="Register" />
 // secondary button
-<Button buttonText="Register" size="small" />
+<Button buttonText="Register" size="sm" />
 ```
 
 ---
@@ -104,6 +117,17 @@ Or you can add style globally with configure this CSS variable in your `global.c
 
 ---
 
+### 4.3. Customize Button's variant
+
+You can customize the Button's variant using `variant` attribute
+
+```javascript
+// add value to "variant" attribute (default: "fill")
+<Button buttonText="Register" variant="line" />
+```
+
+---
+
 ### 4.3. Customize Button's radius
 
 You can customize the Button's radius using `radius` attribute
@@ -121,32 +145,38 @@ You can customize the Button's content by choosing between "reg" (regular, has `
 
 ```javascript
 // with "reg" option (default)
-<Button buttonText="Log Out" endContent={<ExitIcon />} />
+<Button buttonText="Log Out" endContent={<ExitIcon width="auto" height="15px" />} />
 // with "icon" option
-<Button buttonText="Log Out" subVariant="icon" iconContent={<ExitIcon />} />
+<Button buttonText="Log Out" subVariant="icon" iconContent={<ExitIcon width="auto" height="15px" />} />
 ```
 
 ## 5. API
 
 ### 5.1. Button Props
 
-| Attribute        | Type                                   | Description                                                                                                                 | Default                  |
-| ---------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `id`             | _string_ (required)                    | Specifies the id of the button.                                                                                             | _button-id_              |
-| `size`           | _small_ / _reg_                        | Specifies the size of the button.                                                                                           | _reg_                    |
-| `type`           | _button_ / _submit_ / _route_          | Specifies the type of the button.                                                                                           | _button_                 |
-| `variant`        | _fill_ / _hollow_ / _line_             | Specifies the visual style variant of the button.                                                                           | _fill_                   |
-| `subVariant`     | _reg_ / _icon_                         | Specifies the sub-variant of the button, whether regular or icon.                                                           | _reg_                    |
-| `radius`         | _none_ / _sm_ / _md_ / _lg_ / _full_   | Specifies the border radius of the button.                                                                                  | _md_                     |
-| `color`          | _string_                               | Specifies the text color of the button.                                                                                     | var(--color-button-text) |
-| `bgColor`        | _string_                               | Specifies the background color of the button.                                                                               | var(--color-button)      |
-| `buttonText`     | _string_ (required)                    | The text content of the button.                                                                                             | _Click Me!_              |
-| `isLoading`      | _boolean_                              | Indicates whether the button is in a loading state.                                                                         | _false_                  |
-| `iconContent`    | _ReactNode_                            | Icon content to be displayed when "icon" value assigned to "subVariant" attribute.                                          | -                        |
-| `startContent`   | _ReactNode_                            | Additional content to be displayed at the start of the button.                                                              | -                        |
-| `endContent`     | _ReactNode_                            | Additional content to be displayed at the end of the button.                                                                | -                        |
-| `loadingContent` | _ReactNode_                            | Custom loading content to display when the button is in a loading state. If not provided, defaults to a "Loading ..." text. | -                        |
-| `to`             | _string_ (required for "route" `type`) | The URL to navigate to if the button type is "route".                                                                       | -                        |
+| Attribute        | Type                                   | Description                                                              | Condition           | Default                    |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------------------ | ------------------- | -------------------------- |
+| `id`             | _string_ (required)                    | Specifies the id of the button.                                          | -                   | _ibrahimstudio-default-id_ |
+| `size`           | _sm_ / _reg_                           | Specifies the size of the button.                                        | -                   | _reg_                      |
+| `type`           | _button_ / _submit_ / _route_ / _link_ | Specifies the type of the button.                                        | -                   | _button_                   |
+| `variant`        | _fill_ / _hollow_ / _line_ / _dashed_  | Specifies the visual style variant of the button.                        | -                   | _fill_                     |
+| `subVariant`     | _reg_ / _icon_                         | Specifies the sub-variant of the button, whether regular or icon.        | -                   | _reg_                      |
+| `radius`         | _none_ / _sm_ / _md_ / _lg_ / _full_   | Specifies the border radius of the button.                               | -                   | _md_                       |
+| `color`          | _string_                               | Specifies the text color of the button.                                  | -                   | var(--color-button-text)   |
+| `bgColor`        | _string_                               | Specifies the background color of the button.                            | -                   | var(--color-button)        |
+| `buttonText`     | _string_ (required)                    | The text content of the button.                                          | `subVariant`="reg"  | _Click Me!_                |
+| `tooltipText`    | _string_ (required)                    | The text content of the tooltip.                                         | `isTooltip`="true"  | _Tooltip!_                 |
+| `isLoading`      | _boolean_                              | Indicates whether the button is in a loading state.                      | -                   | _false_                    |
+| `isDisabled`     | _boolean_                              | Indicates whether the button is in a disabled state.                     | -                   | _false_                    |
+| `isFullwidth`    | _boolean_                              | Indicates whether the button is in a full-width state.                   | `isTooltip`="false" | _false_                    |
+| `isTooltip`      | _boolean_                              | Indicates whether the button has a tooltip.                              | -                   | _false_                    |
+| `isNewTab`       | _boolean_                              | Indicates whether the button is in a loading state.                      | `type`="link"       | _true_                     |
+| `iconContent`    | _ReactNode_                            | Icon content to replace `buttonText` value.                              | `subVariant`="icon" | -                          |
+| `startContent`   | _ReactNode_                            | Additional content to be displayed at the start of the button.           | -                   | -                          |
+| `endContent`     | _ReactNode_                            | Additional content to be displayed at the end of the button.             | -                   | -                          |
+| `loadingContent` | _ReactNode_                            | Custom loading content to display when the button is in a loading state. | -                   | _spinner_                  |
+| `to`             | _string_ (required)                    | The route path to navigate to if the button `type` is _route_.           | `type`="route"      | -                          |
+| `href`           | _string_ (required)                    | The external URL to navigate to if the button `type` is _link_.          | `type`="link"       | -                          |
 
 ---
 

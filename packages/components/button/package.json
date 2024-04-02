@@ -1,6 +1,6 @@
 {
   "name": "@ibrahimstudio/button",
-  "version": "1.0.23",
+  "version": "1.0.27",
   "description": "This package provides a customizable button component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

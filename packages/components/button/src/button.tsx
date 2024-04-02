@@ -4,7 +4,7 @@ import s from "./button.module.css";
 
 interface ButtonProps {
   id: string;
-  size?: "small" | "reg";
+  size?: "sm" | "reg";
   type?: "button" | "submit" | "route" | "link";
   variant?: "fill" | "hollow" | "line" | "dashed";
   subVariant?: "reg" | "icon";
@@ -15,7 +15,8 @@ interface ButtonProps {
   isLoading?: boolean;
   isDisabled?: boolean;
   isNewTab?: boolean;
-  tooltip?: boolean;
+  isFullwidth?: boolean;
+  isTooltip?: boolean;
   tooltipText: string;
   iconContent?: React.ReactNode;
   startContent?: React.ReactNode;
@@ -39,7 +40,8 @@ const Button: React.FC<ButtonProps> = ({
   isLoading = false,
   isDisabled = false,
   isNewTab = true,
-  tooltip = false,
+  isFullwidth = false,
+  isTooltip = false,
   tooltipText = "Tooltip!",
   iconContent,
   startContent,
@@ -90,11 +92,22 @@ const Button: React.FC<ButtonProps> = ({
       onClick && onClick();
     }
   };
+
+  const loadingText = () => {
+    return (
+      <React.Fragment>
+        <span>{`Loading `}</span>
+        <span className={s.dot1}>.</span>
+        <span className={s.dot2}>.</span>
+        <span className={s.dot3}>.</span>
+      </React.Fragment>
+    );
+  };
   // dynamic button style
   const getButtonStyles = () => {
     let buttonColor: string;
     let backgroundColor: string;
-    let boxShadow: string;
+    let border: string;
     let borderRadius: string;
     let height: string;
 
@@ -102,27 +115,27 @@ const Button: React.FC<ButtonProps> = ({
       case "fill":
         buttonColor = color;
         backgroundColor = bgColor;
-        boxShadow = `inset 0 0 0 1.5px ${bgColor}`;
+        border = `1px solid ${bgColor}`;
         break;
       case "hollow":
         buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        boxShadow = "inset 0 0 0 1.5px transparent";
+        border = "1px solid transparent";
         break;
       case "line":
         buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        boxShadow = `inset 0 0 0 1.5px ${color || bgColor}`;
+        border = `1px solid ${color || bgColor}`;
         break;
       case "dashed":
         buttonColor = color || bgColor;
         backgroundColor = "transparent";
-        boxShadow = `inset 0 0 0 1.5px ${color || bgColor}`;
+        border = `1px dashed ${color || bgColor}`;
         break;
       default:
         buttonColor = color;
         backgroundColor = bgColor;
-        boxShadow = `inset 0 0 0 1.5px ${bgColor}`;
+        border = `1px solid ${bgColor}`;
         break;
     }
 
@@ -151,7 +164,7 @@ const Button: React.FC<ButtonProps> = ({
       case "reg":
         height = "var(--ibst-pixel-50)";
         break;
-      case "small":
+      case "sm":
         height = "var(--ibst-pixel-40)";
         break;
       default:
@@ -163,7 +176,7 @@ const Button: React.FC<ButtonProps> = ({
       borderRadius,
       color: buttonColor,
       backgroundColor,
-      boxShadow,
+      border,
       height,
     };
   };
@@ -191,12 +204,22 @@ const Button: React.FC<ButtonProps> = ({
   let blockBgColor: string;
   let rippleColor: string;
 
-  if (handleContrastColor(bgColor, -30) === bgColor) {
-    rippleColor = `rgba(255, 255, 255, 0.25)`;
-    blockBgColor = `rgba(255, 255, 255, 0.15)`;
+  if (variant === "hollow" || variant === "line" || variant === "dashed") {
+    if (handleContrastColor(color, -30) === color) {
+      rippleColor = `rgba(255, 255, 255, 0.2)`;
+      blockBgColor = `rgba(255, 255, 255, 0.1)`;
+    } else {
+      rippleColor = `rgba(0, 0, 0, 0.2)`;
+      blockBgColor = `rgba(0, 0, 0, 0.1)`;
+    }
   } else {
-    rippleColor = `rgba(0, 0, 0, 0.25)`;
-    blockBgColor = `rgba(0, 0, 0, 0.15)`;
+    if (handleContrastColor(bgColor, -30) === bgColor) {
+      rippleColor = `rgba(255, 255, 255, 0.2)`;
+      blockBgColor = `rgba(255, 255, 255, 0.1)`;
+    } else {
+      rippleColor = `rgba(0, 0, 0, 0.2)`;
+      blockBgColor = `rgba(0, 0, 0, 0.1)`;
+    }
   }
   // delay timer for tooltip
   const delay: number = 500;
@@ -267,7 +290,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <React.Fragment>
       {type === "route" && to ? (
-        tooltip === true && tooltip ? (
+        isTooltip === true && isTooltip ? (
           <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -277,14 +300,14 @@ const Button: React.FC<ButtonProps> = ({
               <div ref={tooltipRef} className={s.tooltip}>
                 <div ref={tooltipContentRef} className={s.tooltipContent}>
                   <div className={s.tooltipContentText}>
-                    {isLoading ? "Loading ..." : tooltipText}
+                    {isLoading ? loadingText() : tooltipText}
                   </div>
                 </div>
               </div>
             )}
             <Link
               id={id}
-              className={s.button}
+              className={`${s.button} ${isFullwidth ? s.full : ""}`}
               style={getButtonStyles()}
               to={to}
             >
@@ -305,7 +328,7 @@ const Button: React.FC<ButtonProps> = ({
                         className={s.ringSpinner}
                         style={{ borderTopColor: color }}
                       ></div>
-                      <div className={s.buttonText}>Loading ...</div>
+                      <div className={s.buttonText}>{loadingText()}</div>
                     </React.Fragment>
                   )}
                   {endContent && !isLoading && (
@@ -313,7 +336,7 @@ const Button: React.FC<ButtonProps> = ({
                   )}
                 </React.Fragment>
               )}
-              {isRippling && (
+              {isRippling && !isDisabled && !isLoading && (
                 <span
                   className={s.buttonRipple}
                   style={{
@@ -332,72 +355,11 @@ const Button: React.FC<ButtonProps> = ({
             </Link>
           </div>
         ) : (
-          <Link id={id} className={s.button} style={getButtonStyles()} to={to}>
-            {subVariant === "icon" ? (
-              <div style={{ zIndex: "3" }}>{iconContent}</div>
-            ) : (
-              <React.Fragment>
-                {startContent && !isLoading && (
-                  <div style={{ zIndex: "3" }}>{startContent}</div>
-                )}
-                {!isLoading ? (
-                  <div className={s.buttonText}>{buttonText}</div>
-                ) : loadingContent ? (
-                  <div style={{ zIndex: "3" }}>{loadingContent}</div>
-                ) : (
-                  <React.Fragment>
-                    <div
-                      className={s.ringSpinner}
-                      style={{ borderTopColor: color }}
-                    ></div>
-                    <div className={s.buttonText}>Loading ...</div>
-                  </React.Fragment>
-                )}
-                {endContent && !isLoading && (
-                  <div style={{ zIndex: "3" }}>{endContent}</div>
-                )}
-              </React.Fragment>
-            )}
-            {isRippling && (
-              <span
-                className={s.buttonRipple}
-                style={{
-                  left: coords.x,
-                  top: coords.y,
-                  backgroundColor: rippleColor,
-                }}
-              />
-            )}
-            {!isDisabled && !isLoading && (
-              <div
-                className={s.buttonBlock}
-                style={{ background: blockBgColor }}
-              ></div>
-            )}
-          </Link>
-        )
-      ) : tooltip === true && tooltip ? (
-        <div
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className={s.container}
-        >
-          {hover && (
-            <div ref={tooltipRef} className={s.tooltip}>
-              <div ref={tooltipContentRef} className={s.tooltipContent}>
-                <div className={s.tooltipContentText}>
-                  {isLoading ? "Loading ..." : tooltipText}
-                </div>
-              </div>
-            </div>
-          )}
-          <button
+          <Link
             id={id}
-            className={s.button}
+            className={`${s.button} ${isFullwidth ? s.full : ""}`}
             style={getButtonStyles()}
-            type={type === "submit" ? "submit" : "button"}
-            onClick={handleClick}
-            disabled={isDisabled}
+            to={to}
           >
             {subVariant === "icon" ? (
               <div style={{ zIndex: "3" }}>{iconContent}</div>
@@ -416,7 +378,7 @@ const Button: React.FC<ButtonProps> = ({
                       className={s.ringSpinner}
                       style={{ borderTopColor: color }}
                     ></div>
-                    <div className={s.buttonText}>Loading ...</div>
+                    <div className={s.buttonText}>{loadingText()}</div>
                   </React.Fragment>
                 )}
                 {endContent && !isLoading && (
@@ -424,7 +386,75 @@ const Button: React.FC<ButtonProps> = ({
                 )}
               </React.Fragment>
             )}
-            {isRippling && (
+            {isRippling && !isDisabled && !isLoading && (
+              <span
+                className={s.buttonRipple}
+                style={{
+                  left: coords.x,
+                  top: coords.y,
+                  backgroundColor: rippleColor,
+                }}
+              />
+            )}
+            {!isDisabled && !isLoading && (
+              <div
+                className={s.buttonBlock}
+                style={{ background: blockBgColor }}
+              ></div>
+            )}
+          </Link>
+        )
+      ) : isTooltip === true && isTooltip ? (
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={s.container}
+        >
+          {hover && (
+            <div ref={tooltipRef} className={s.tooltip}>
+              <div ref={tooltipContentRef} className={s.tooltipContent}>
+                <div className={s.tooltipContentText}>
+                  {isLoading ? loadingText() : tooltipText}
+                </div>
+              </div>
+            </div>
+          )}
+          <button
+            id={id}
+            className={`${s.button} ${isDisabled ? s.disabled : ""} ${
+              isLoading ? s.loading : ""
+            } ${isFullwidth ? s.full : ""}`}
+            style={getButtonStyles()}
+            type={type === "submit" ? "submit" : "button"}
+            onClick={handleClick}
+            disabled={isLoading ? true : isDisabled}
+          >
+            {subVariant === "icon" ? (
+              <div style={{ zIndex: "3" }}>{iconContent}</div>
+            ) : (
+              <React.Fragment>
+                {startContent && !isLoading && (
+                  <div style={{ zIndex: "3" }}>{startContent}</div>
+                )}
+                {!isLoading ? (
+                  <div className={s.buttonText}>{buttonText}</div>
+                ) : loadingContent ? (
+                  <div style={{ zIndex: "3" }}>{loadingContent}</div>
+                ) : (
+                  <React.Fragment>
+                    <div
+                      className={s.ringSpinner}
+                      style={{ borderTopColor: color }}
+                    ></div>
+                    <div className={s.buttonText}>{loadingText()}</div>
+                  </React.Fragment>
+                )}
+                {endContent && !isLoading && (
+                  <div style={{ zIndex: "3" }}>{endContent}</div>
+                )}
+              </React.Fragment>
+            )}
+            {isRippling && !isDisabled && !isLoading && (
               <span
                 className={s.buttonRipple}
                 style={{
@@ -445,11 +475,13 @@ const Button: React.FC<ButtonProps> = ({
       ) : (
         <button
           id={id}
-          className={s.button}
+          className={`${s.button} ${isDisabled ? s.disabled : ""} ${
+            isLoading ? s.loading : ""
+          } ${isFullwidth ? s.full : ""}`}
           style={getButtonStyles()}
           type={type === "submit" ? "submit" : "button"}
           onClick={handleClick}
-          disabled={isDisabled}
+          disabled={isLoading ? true : isDisabled}
         >
           {subVariant === "icon" ? (
             <div style={{ zIndex: "3" }}>{iconContent}</div>
@@ -468,7 +500,7 @@ const Button: React.FC<ButtonProps> = ({
                     className={s.ringSpinner}
                     style={{ borderTopColor: color }}
                   ></div>
-                  <div className={s.buttonText}>Loading ...</div>
+                  <div className={s.buttonText}>{loadingText()}</div>
                 </React.Fragment>
               )}
               {endContent && !isLoading && (
@@ -476,7 +508,7 @@ const Button: React.FC<ButtonProps> = ({
               )}
             </React.Fragment>
           )}
-          {isRippling && (
+          {isRippling && !isDisabled && !isLoading && (
             <span
               className={s.buttonRipple}
               style={{
