@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="20%" src="https://raw.githubusercontent.com/space-ibrahimstudio/ibrahimstudio/master/public/image/iss-logo.png" alt="@ibrahimstudio" />
+    <img width="20%" src="https://raw.githubusercontent.com/space-ibrahimstudio/ibrahimstudio/master/public/image/iss-logo.png" alt="@ibrahimstudio/button" />
     <div align="center">
       <h1>@ibrahimstudio/button</h1>
       <h3>by: Ibrahim Space Studio</h3>
@@ -71,7 +71,7 @@ Add "route" value to `type` attribute, then add target route in `to` attribute
 
 ---
 
-### 3.3. With `link` type
+### 3.4. With `link` type
 
 Add "link" value to `type` attribute, then add target URL in `href` attribute
 
@@ -121,6 +121,10 @@ Or you can add style globally with configure this CSS variable in your `global.c
 
 You can customize the Button's variant using `variant` attribute
 
+<div align="left">
+    <img width="55%" src="https://raw.githubusercontent.com/space-ibrahimstudio/ibrahimstudio/master/public/image/button-variant.png" alt="@ibrahimstudio/button variant" />
+</div>
+
 ```javascript
 // add value to "variant" attribute (default: "fill")
 <Button buttonText="Register" variant="line" />
@@ -128,7 +132,7 @@ You can customize the Button's variant using `variant` attribute
 
 ---
 
-### 4.3. Customize Button's radius
+### 4.4. Customize Button's radius
 
 You can customize the Button's radius using `radius` attribute
 
@@ -139,7 +143,7 @@ You can customize the Button's radius using `radius` attribute
 
 ---
 
-### 4.4. Customize Button's content
+### 4.5. Customize Button's content
 
 You can customize the Button's content by choosing between "reg" (regular, has `startContent`/`endContent` or both and `buttonText`), or "icon" (icon only) in `subVariant` attribute then implement `iconContent` attribute
 
@@ -147,12 +151,27 @@ You can customize the Button's content by choosing between "reg" (regular, has `
 // with "reg" option (default)
 <Button buttonText="Log Out" endContent={<ExitIcon width="auto" height="15px" />} />
 // with "icon" option
-<Button buttonText="Log Out" subVariant="icon" iconContent={<ExitIcon width="auto" height="15px" />} />
+<Button subVariant="icon" iconContent={<ExitIcon width="auto" height="15px" />} />
 ```
 
-## 5. API
+## 5. Boundary Aware Tooltip
 
-### 5.1. Button Props
+You can add tooltip to this components (especially for "icon" `subVariant`) by adding the `isTooltip` and `tooltipText` value
+
+<div align="left">
+    <img width="55%" src="https://raw.githubusercontent.com/space-ibrahimstudio/ibrahimstudio/master/public/image/button-tooltip.png" alt="@ibrahimstudio/button tooltip" />
+</div>
+
+```javascript
+// with "reg" option (default)
+<Button buttonText="Register Now" isTooltip={true} tooltipText="Create Account" />
+// with "icon" option
+<Button subVariant="icon" isTooltip={true} tooltipText="View Cart" />
+```
+
+## 6. API
+
+### 6.1. Button Props
 
 | Attribute        | Type                                   | Description                                                              | Condition           | Default                    |
 | ---------------- | -------------------------------------- | ------------------------------------------------------------------------ | ------------------- | -------------------------- |
@@ -170,7 +189,7 @@ You can customize the Button's content by choosing between "reg" (regular, has `
 | `isDisabled`     | _boolean_                              | Indicates whether the button is in a disabled state.                     | -                   | _false_                    |
 | `isFullwidth`    | _boolean_                              | Indicates whether the button is in a full-width state.                   | `isTooltip`="false" | _false_                    |
 | `isTooltip`      | _boolean_                              | Indicates whether the button has a tooltip.                              | -                   | _false_                    |
-| `isNewTab`       | _boolean_                              | Indicates whether the button is in a loading state.                      | `type`="link"       | _true_                     |
+| `isNewTab`       | _boolean_                              | Indicates whether the external URL opened in new tab.                    | `type`="link"       | _true_                     |
 | `iconContent`    | _ReactNode_                            | Icon content to replace `buttonText` value.                              | `subVariant`="icon" | -                          |
 | `startContent`   | _ReactNode_                            | Additional content to be displayed at the start of the button.           | -                   | -                          |
 | `endContent`     | _ReactNode_                            | Additional content to be displayed at the end of the button.             | -                   | -                          |
@@ -180,16 +199,16 @@ You can customize the Button's content by choosing between "reg" (regular, has `
 
 ---
 
-### 5.2. Button Event(s)
+### 6.2. Button Event(s)
 
 | Attribute | Type                           | Description                                                     |
 | --------- | ------------------------------ | --------------------------------------------------------------- |
 | `onClick` | _MouseEventHandler_ (required) | Event handler function to be called when the button is clicked. |
 
-## 6. Contributing
+## 7. Contributing
 
 Contributions are welcome! If you have any improvements, bug fixes, or features, feel free to open an issue or create a pull request on GitHub.
 
-## 7. License
+## 8. License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/space-ibrahimstudio/ibrahimstudio/blob/master/LICENSE) file for details.
