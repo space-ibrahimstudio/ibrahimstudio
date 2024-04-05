@@ -113,6 +113,8 @@ interface InputProps {
     | "tel"
     | "time"
     | "url";
+  min?: number | string;
+  max?: number | string;
   minLength?: number;
   maxLength?: number;
   cols?: number;
@@ -154,6 +156,8 @@ const Input: React.FC<InputProps> = ({
   name,
   placeholder = "Input Placeholder",
   type = "text",
+  min,
+  max,
   minLength,
   maxLength,
   cols,
@@ -173,10 +177,31 @@ const Input: React.FC<InputProps> = ({
 }) => {
   const [passwordSeen, setPasswordSeen] = React.useState<boolean>(false);
   const [selectOpen, setSelectOpen] = React.useState<boolean>(false);
+  const [isOverflowing, setIsOverflowing] = React.useState<boolean>(false);
   const [selectedOption, setSelectedOption] = React.useState<string | number>(
     value
   );
   const ref = React.useRef<HTMLDivElement>(null);
+  const optionsRef = React.useRef<HTMLDivElement>(null);
+
+  function checkOverflow() {
+    if (optionsRef.current) {
+      const optionsContainer = optionsRef.current;
+      const parent = optionsContainer.parentElement;
+      const parentRect = parent ? parent.getBoundingClientRect() : null;
+      const optionsContainerRect = optionsContainer.getBoundingClientRect();
+
+      if (
+        parent &&
+        parentRect &&
+        optionsContainerRect.bottom > parentRect.bottom
+      ) {
+        setIsOverflowing(true);
+      } else {
+        setIsOverflowing(false);
+      }
+    }
+  }
 
   const togglePasswordSeen = () => {
     setPasswordSeen(!passwordSeen);
@@ -240,6 +265,8 @@ const Input: React.FC<InputProps> = ({
             autoComplete={autoComplete}
             required={isRequired}
             readOnly={isReadonly}
+            min={min}
+            max={max}
             minLength={minLength}
             maxLength={maxLength}
           />
@@ -267,7 +294,8 @@ const Input: React.FC<InputProps> = ({
               <div
                 className={`${s.optionsContainer} ${
                   selectOpen ? s.opened : s.closed
-                }`}
+                } ${isOverflowing ? s.scroll : s.noscroll}`}
+                ref={optionsRef}
               >
                 {options.map((option) => (
                   <div
@@ -318,6 +346,8 @@ const Input: React.FC<InputProps> = ({
             autoComplete={autoComplete}
             required={isRequired}
             readOnly={isReadonly}
+            min={min}
+            max={max}
             minLength={minLength}
             maxLength={maxLength}
           />
@@ -370,6 +400,22 @@ const Input: React.FC<InputProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  React.useEffect(() => {
+    function handleResize() {
+      checkOverflow();
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    checkOverflow();
+  }, [selectOpen]);
 
   return (
     <div
