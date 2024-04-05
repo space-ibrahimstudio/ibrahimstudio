@@ -1,4 +1,4 @@
-export const scrollView = (offset: number, id: string): void => {
+export function scrollView(offset: number, id: string): void {
   const element = document.querySelector(`[id="${id}"]`) as HTMLElement | null;
   if (element) {
     const yOffset: number = offset;
@@ -8,18 +8,18 @@ export const scrollView = (offset: number, id: string): void => {
   } else {
     console.error(`Element with id ${id} not found.`);
   }
-};
+}
 
-export const toTitleCase = (str: string): string => {
+export function toTitleCase(str: string): string {
   return str.replace(/\w\S*/g, function (txt: string): string {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
-};
+}
 
-export const formatDate = (
+export function formatDate(
   dateString: string,
   locale: string = "en-US"
-): string => {
+): string {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
     day: "numeric",
@@ -29,4 +29,4 @@ export const formatDate = (
     minute: "numeric",
   };
   return date.toLocaleDateString(locale, options);
-};
+}
