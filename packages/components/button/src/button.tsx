@@ -34,8 +34,8 @@ const Button: React.FC<ButtonProps> = ({
   variant = "fill",
   subVariant = "reg",
   radius = "md",
-  color = "var(--color-button-text)",
-  bgColor = "var(--color-button)",
+  color = "var(--theme-color-base)",
+  bgColor = "var(--theme-color-primary)",
   buttonText = "Click Me!",
   isLoading = false,
   isDisabled = false,
@@ -312,16 +312,46 @@ const Button: React.FC<ButtonProps> = ({
               to={to}
             >
               {subVariant === "icon" ? (
-                <div style={{ zIndex: "3" }}>{iconContent}</div>
+                <div
+                  style={{
+                    zIndex: "3",
+                    display: "flex",
+                    position: "relative",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {iconContent}
+                </div>
               ) : (
                 <React.Fragment>
                   {startContent && !isLoading && (
-                    <div style={{ zIndex: "3" }}>{startContent}</div>
+                    <div
+                      style={{
+                        zIndex: "3",
+                        display: "flex",
+                        position: "relative",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {startContent}
+                    </div>
                   )}
                   {!isLoading ? (
                     <div className={s.buttonText}>{buttonText}</div>
                   ) : loadingContent ? (
-                    <div style={{ zIndex: "3" }}>{loadingContent}</div>
+                    <div
+                      style={{
+                        zIndex: "3",
+                        display: "flex",
+                        position: "relative",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {loadingContent}
+                    </div>
                   ) : (
                     <React.Fragment>
                       <div
@@ -332,7 +362,17 @@ const Button: React.FC<ButtonProps> = ({
                     </React.Fragment>
                   )}
                   {endContent && !isLoading && (
-                    <div style={{ zIndex: "3" }}>{endContent}</div>
+                    <div
+                      style={{
+                        zIndex: "3",
+                        display: "flex",
+                        position: "relative",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {endContent}
+                    </div>
                   )}
                 </React.Fragment>
               )}
@@ -362,16 +402,46 @@ const Button: React.FC<ButtonProps> = ({
             to={to}
           >
             {subVariant === "icon" ? (
-              <div style={{ zIndex: "3" }}>{iconContent}</div>
+              <div
+                style={{
+                  zIndex: "3",
+                  display: "flex",
+                  position: "relative",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {iconContent}
+              </div>
             ) : (
               <React.Fragment>
                 {startContent && !isLoading && (
-                  <div style={{ zIndex: "3" }}>{startContent}</div>
+                  <div
+                    style={{
+                      zIndex: "3",
+                      display: "flex",
+                      position: "relative",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {startContent}
+                  </div>
                 )}
                 {!isLoading ? (
                   <div className={s.buttonText}>{buttonText}</div>
                 ) : loadingContent ? (
-                  <div style={{ zIndex: "3" }}>{loadingContent}</div>
+                  <div
+                    style={{
+                      zIndex: "3",
+                      display: "flex",
+                      position: "relative",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {loadingContent}
+                  </div>
                 ) : (
                   <React.Fragment>
                     <div
@@ -382,7 +452,17 @@ const Button: React.FC<ButtonProps> = ({
                   </React.Fragment>
                 )}
                 {endContent && !isLoading && (
-                  <div style={{ zIndex: "3" }}>{endContent}</div>
+                  <div
+                    style={{
+                      zIndex: "3",
+                      display: "flex",
+                      position: "relative",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {endContent}
+                  </div>
                 )}
               </React.Fragment>
             )}
@@ -430,16 +510,46 @@ const Button: React.FC<ButtonProps> = ({
             disabled={isLoading ? true : isDisabled}
           >
             {subVariant === "icon" ? (
-              <div style={{ zIndex: "3" }}>{iconContent}</div>
+              <div
+                style={{
+                  zIndex: "3",
+                  display: "flex",
+                  position: "relative",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {iconContent}
+              </div>
             ) : (
               <React.Fragment>
                 {startContent && !isLoading && (
-                  <div style={{ zIndex: "3" }}>{startContent}</div>
+                  <div
+                    style={{
+                      zIndex: "3",
+                      display: "flex",
+                      position: "relative",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {startContent}
+                  </div>
                 )}
                 {!isLoading ? (
                   <div className={s.buttonText}>{buttonText}</div>
                 ) : loadingContent ? (
-                  <div style={{ zIndex: "3" }}>{loadingContent}</div>
+                  <div
+                    style={{
+                      zIndex: "3",
+                      display: "flex",
+                      position: "relative",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {loadingContent}
+                  </div>
                 ) : (
                   <React.Fragment>
                     <div
@@ -450,7 +560,17 @@ const Button: React.FC<ButtonProps> = ({
                   </React.Fragment>
                 )}
                 {endContent && !isLoading && (
-                  <div style={{ zIndex: "3" }}>{endContent}</div>
+                  <div
+                    style={{
+                      zIndex: "3",
+                      display: "flex",
+                      position: "relative",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {endContent}
+                  </div>
                 )}
               </React.Fragment>
             )}
@@ -484,16 +604,46 @@ const Button: React.FC<ButtonProps> = ({
           disabled={isLoading ? true : isDisabled}
         >
           {subVariant === "icon" ? (
-            <div style={{ zIndex: "3" }}>{iconContent}</div>
+            <div
+              style={{
+                zIndex: "3",
+                display: "flex",
+                position: "relative",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {iconContent}
+            </div>
           ) : (
             <React.Fragment>
               {startContent && !isLoading && (
-                <div style={{ zIndex: "3" }}>{startContent}</div>
+                <div
+                  style={{
+                    zIndex: "3",
+                    display: "flex",
+                    position: "relative",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {startContent}
+                </div>
               )}
               {!isLoading ? (
                 <div className={s.buttonText}>{buttonText}</div>
               ) : loadingContent ? (
-                <div style={{ zIndex: "3" }}>{loadingContent}</div>
+                <div
+                  style={{
+                    zIndex: "3",
+                    display: "flex",
+                    position: "relative",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {loadingContent}
+                </div>
               ) : (
                 <React.Fragment>
                   <div
@@ -504,7 +654,17 @@ const Button: React.FC<ButtonProps> = ({
                 </React.Fragment>
               )}
               {endContent && !isLoading && (
-                <div style={{ zIndex: "3" }}>{endContent}</div>
+                <div
+                  style={{
+                    zIndex: "3",
+                    display: "flex",
+                    position: "relative",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {endContent}
+                </div>
               )}
             </React.Fragment>
           )}

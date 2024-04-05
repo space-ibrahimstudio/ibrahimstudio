@@ -1,7 +1,7 @@
 {
-  "name": "@ibrahimstudio/button",
-  "version": "1.1.1",
-  "description": "This package provides a customizable button component for React applications.",
+  "name": "@ibrahimstudio/input",
+  "version": "1.0.13",
+  "description": "This package provides a customizable input component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "button",
+    "input",
     "react",
     "typescript"
   ],
@@ -27,7 +27,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/space-ibrahimstudio/ibrahimstudio.git",
-    "directory": "packages/components/button"
+    "directory": "packages/components/input"
   },
   "bugs": {
     "url": "https://github.com/space-ibrahimstudio/ibrahimstudio/issues"
@@ -37,8 +37,7 @@
   "homepage": "https://space.ibrahimstudio.co",
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18",
-    "react-router-dom": "^6.22.3"
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
@@ -47,7 +46,6 @@
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
-    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.57.0",

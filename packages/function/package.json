@@ -1,12 +1,13 @@
 {
   "name": "@ibrahimstudio/function",
-  "version": "1.0.1",
-  "description": "This function package provides useful functions for handling common tasks in JavaScript applications.",
+  "version": "1.0.2",
+  "description": "This function package provides useful functions for handling common tasks in React applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "build": "tsc",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -38,8 +39,16 @@
     "react-dom": ">=18"
   },
   "devDependencies": {
+    "@types/node": "^20.11.30",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tslib": "^2.6.2",
     "typescript": "^5.3.3"
   }
 }
