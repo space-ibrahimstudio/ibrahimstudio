@@ -1,6 +1,6 @@
 {
   "name": "@ibrahimstudio/input",
-  "version": "1.0.14",
+  "version": "1.1.0",
   "description": "This package provides a customizable input component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

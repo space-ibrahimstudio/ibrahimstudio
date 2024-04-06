@@ -135,6 +135,7 @@ interface InputProps {
 
 interface CustomCSSProperties extends React.CSSProperties {
   "--ibst-color-base"?: string;
+  "--ibst-color-base-10"?: string;
   "--ibst-color-primary"?: string;
   "--ibst-color-primary-5"?: string;
   "--ibst-color-primary-20"?: string;
@@ -177,31 +178,11 @@ const Input: React.FC<InputProps> = ({
 }) => {
   const [passwordSeen, setPasswordSeen] = React.useState<boolean>(false);
   const [selectOpen, setSelectOpen] = React.useState<boolean>(false);
-  const [isOverflowing, setIsOverflowing] = React.useState<boolean>(false);
   const [selectedOption, setSelectedOption] = React.useState<string | number>(
     value
   );
   const ref = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
-
-  function checkOverflow() {
-    if (optionsRef.current) {
-      const optionsContainer = optionsRef.current;
-      const parent = optionsContainer.parentElement;
-      const parentRect = parent ? parent.getBoundingClientRect() : null;
-      const optionsContainerRect = optionsContainer.getBoundingClientRect();
-
-      if (
-        parent &&
-        parentRect &&
-        optionsContainerRect.bottom > parentRect.bottom
-      ) {
-        setIsOverflowing(true);
-      } else {
-        setIsOverflowing(false);
-      }
-    }
-  }
 
   const togglePasswordSeen = () => {
     setPasswordSeen(!passwordSeen);
@@ -294,7 +275,7 @@ const Input: React.FC<InputProps> = ({
               <div
                 className={`${s.optionsContainer} ${
                   selectOpen ? s.opened : s.closed
-                } ${isOverflowing ? s.scroll : s.noscroll}`}
+                }`}
                 ref={optionsRef}
               >
                 {options.map((option) => (
@@ -390,7 +371,12 @@ const Input: React.FC<InputProps> = ({
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target as Node) &&
+        optionsRef.current &&
+        !optionsRef.current.contains(event.target as Node)
+      ) {
         setSelectOpen(false);
       }
     };
@@ -402,19 +388,32 @@ const Input: React.FC<InputProps> = ({
   }, []);
 
   React.useEffect(() => {
-    function handleResize() {
-      checkOverflow();
-    }
+    const handleResize = () => {
+      if (selectOpen && optionsRef.current && ref.current) {
+        const dropdownRect = optionsRef.current.getBoundingClientRect();
+        const buttonRect = ref.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-    window.addEventListener("resize", handleResize);
+        if (dropdownRect.bottom > windowHeight) {
+          optionsRef.current.style.maxHeight = `${
+            windowHeight - buttonRect.bottom
+          }px`;
+          optionsRef.current.style.overflowY = "auto";
+        } else if (dropdownRect.top < 0) {
+          optionsRef.current.style.maxHeight = `${buttonRect.top}px`;
+          optionsRef.current.style.overflowY = "auto";
+        }
+      }
+    };
+
+    if (selectOpen) {
+      handleResize();
+      window.addEventListener("resize", handleResize);
+    }
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
-
-  React.useEffect(() => {
-    checkOverflow();
   }, [selectOpen]);
 
   return (
@@ -423,6 +422,7 @@ const Input: React.FC<InputProps> = ({
       style={
         {
           "--ibst-color-base": baseColor,
+          "--ibst-color-base-10": adjustOpacity(baseColor, 0.1),
           "--ibst-color-primary": primaryColor,
           "--ibst-color-primary-5": adjustOpacity(primaryColor, 0.05),
           "--ibst-color-primary-20": adjustOpacity(primaryColor, 0.2),
@@ -486,9 +486,9 @@ const Input: React.FC<InputProps> = ({
               tabIndex={0}
             >
               {passwordSeen ? (
-                <EyeSlash width="100%" height="100%" color={primaryColor} />
+                <EyeSlash width="100%" height="100%" color={secondaryColor} />
               ) : (
-                <EyeOpen width="100%" height="100%" color={primaryColor} />
+                <EyeOpen width="100%" height="100%" color={secondaryColor} />
               )}
             </div>
           )}
@@ -503,7 +503,7 @@ const Input: React.FC<InputProps> = ({
             aria-label={selectOpen ? "Close Option" : "Open Option"}
             tabIndex={0}
           >
-            <ChevronDown width="100%" height="100%" color={primaryColor} />
+            <ChevronDown width="100%" height="100%" color={secondaryColor} />
           </div>
         )}
         {type !== "password" && variant !== "select" && endContent && (
