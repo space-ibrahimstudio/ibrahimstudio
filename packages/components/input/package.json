@@ -1,13 +1,14 @@
 {
   "name": "@ibrahimstudio/input",
-  "version": "1.1.0",
+  "version": "1.1.11",
   "description": "This package provides a customizable input component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && npm run clean",
+    "clean": "rimraf dist/utils",
     "lint": "eslint ./src/**/*.{ts,tsx}",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -52,6 +53,7 @@
     "eslint-plugin-react": "^7.34.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rimraf": "^5.0.5",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "tslib": "^2.6.2",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import s from "./input.module.css";
 
 interface IconProps {
@@ -120,6 +120,7 @@ interface InputProps {
   cols?: number;
   rows?: number;
   value: string | number;
+  fallbackValue?: string;
   options: Option[];
   autoComplete?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -127,6 +128,8 @@ interface InputProps {
   isLabeled: boolean;
   isRequired?: boolean;
   isReadonly?: boolean;
+  isDisabled?: boolean;
+  isSearchable?: boolean;
   errorContent?: string;
   infoContent?: string;
   startContent?: React.ReactNode;
@@ -136,6 +139,7 @@ interface InputProps {
 interface CustomCSSProperties extends React.CSSProperties {
   "--ibst-color-base"?: string;
   "--ibst-color-base-10"?: string;
+  "--ibst-color-base-50"?: string;
   "--ibst-color-primary"?: string;
   "--ibst-color-primary-5"?: string;
   "--ibst-color-primary-20"?: string;
@@ -164,6 +168,7 @@ const Input: React.FC<InputProps> = ({
   cols,
   rows = 3,
   value,
+  fallbackValue,
   options,
   autoComplete,
   onChange,
@@ -171,6 +176,8 @@ const Input: React.FC<InputProps> = ({
   isLabeled = true,
   isRequired = false,
   isReadonly = false,
+  isDisabled = false,
+  isSearchable = false,
   errorContent,
   infoContent,
   startContent,
@@ -181,12 +188,20 @@ const Input: React.FC<InputProps> = ({
   const [selectedOption, setSelectedOption] = React.useState<string | number>(
     value
   );
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const ref = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
 
   const togglePasswordSeen = () => {
     setPasswordSeen(!passwordSeen);
   };
+
+  const filteredOptions =
+    searchTerm.length > 0
+      ? options.filter((option) =>
+          option.label.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : options;
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(e.target.value);
@@ -240,12 +255,15 @@ const Input: React.FC<InputProps> = ({
               type === "password" ? (passwordSeen ? "text" : "password") : type
             }
             name={name}
-            placeholder={placeholder}
+            placeholder={
+              isReadonly && value === "" ? fallbackValue : placeholder
+            }
             value={value}
             onChange={onChange}
             autoComplete={autoComplete}
             required={isRequired}
             readOnly={isReadonly}
+            disabled={isDisabled}
             min={min}
             max={max}
             minLength={minLength}
@@ -263,13 +281,16 @@ const Input: React.FC<InputProps> = ({
               }`}
               name={name}
               value={
-                options.find((option) => option.value === selectedOption)
-                  ?.label || placeholder
+                selectedOption === ""
+                  ? placeholder
+                  : options.find((option) => option.value === selectedOption)
+                      ?.label || placeholder
               }
               onChange={handleSelectChange}
               required={isRequired}
+              readOnly={true}
+              disabled={isDisabled}
               onClick={() => setSelectOpen(!selectOpen)}
-              readOnly
             />
             {selectOpen && (
               <div
@@ -278,7 +299,28 @@ const Input: React.FC<InputProps> = ({
                 }`}
                 ref={optionsRef}
               >
-                {options.map((option) => (
+                {isSearchable ? (
+                  <input
+                    type="text"
+                    className={s.searchableInput}
+                    placeholder="Search ..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                ) : (
+                  <div
+                    className={`${s.option} ${
+                      selectedOption === "" ? s.selected : ""
+                    }`}
+                    onClick={() => {
+                      setSelectOpen(false);
+                      setSelectedOption("");
+                    }}
+                  >
+                    <b className={s.optionText}>{placeholder}</b>
+                  </div>
+                )}
+                {filteredOptions.map((option) => (
                   <div
                     key={option.value}
                     className={`${s.option} ${
@@ -300,12 +342,15 @@ const Input: React.FC<InputProps> = ({
             form={formId}
             className={s.inputFieldInput}
             name={name}
-            placeholder={placeholder}
+            placeholder={
+              isReadonly && value === "" ? fallbackValue : placeholder
+            }
             value={value}
             onChange={onChange}
             autoComplete={autoComplete}
             required={isRequired}
             readOnly={isReadonly}
+            disabled={isDisabled}
             cols={cols}
             rows={rows}
             minLength={minLength}
@@ -316,17 +361,21 @@ const Input: React.FC<InputProps> = ({
         return (
           <input
             id={id}
+            form={formId}
             className={s.inputFieldInput}
             type={
               type === "password" ? (passwordSeen ? "text" : "password") : type
             }
             name={name}
-            placeholder={placeholder}
+            placeholder={
+              isReadonly && value === "" ? fallbackValue : placeholder
+            }
             value={value}
             onChange={onChange}
             autoComplete={autoComplete}
             required={isRequired}
             readOnly={isReadonly}
+            disabled={isDisabled}
             min={min}
             max={max}
             minLength={minLength}
@@ -423,6 +472,7 @@ const Input: React.FC<InputProps> = ({
         {
           "--ibst-color-base": baseColor,
           "--ibst-color-base-10": adjustOpacity(baseColor, 0.1),
+          "--ibst-color-base-50": adjustOpacity(baseColor, 0.5),
           "--ibst-color-primary": primaryColor,
           "--ibst-color-primary-5": adjustOpacity(primaryColor, 0.05),
           "--ibst-color-primary-20": adjustOpacity(primaryColor, 0.2),
@@ -454,9 +504,9 @@ const Input: React.FC<InputProps> = ({
       <div
         className={`${s.inputField} ${errorContent ? s.error : ""} ${
           isReadonly ? s.readonly : ""
-        } ${variant !== "textarea" ? s.plain : ""} ${
-          variant !== "select" ? s.inputVariant : ""
-        }`}
+        } ${isDisabled ? s.disabled : ""} ${
+          variant !== "textarea" ? s.plain : ""
+        } ${variant !== "select" ? s.inputVariant : ""}`}
         ref={variant === "select" ? ref : undefined}
         style={getInputStyles()}
       >
