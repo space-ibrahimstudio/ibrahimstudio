@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { LoadingText } from "@ibrahimstudio/contents";
+import { getButtonStyles, getContrastColor } from "@ibrahimstudio/styles";
+import { ISButton } from "@ibrahimstudio/tools";
 import s from "./button.module.css";
 
 interface ButtonProps {
@@ -73,14 +75,15 @@ const Button: React.FC<ButtonProps> = ({
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (type === "button" && !to) {
+    if (type === "button" && !to && !href) {
       handleRipple(event);
       onClick && onClick();
-    } else if (type === "route" && to) {
+    } else if (
+      (type === "route" && to) ||
+      (type === "submit" && !to && !href && !onClick)
+    ) {
       handleRipple(event);
-    } else if (type === "submit") {
-      handleRipple(event);
-    } else if (type === "link" && href) {
+    } else if (type === "link" && href && !to && !onClick) {
       handleRipple(event);
       if (!isNewTab) {
         window.location.href = href;
@@ -92,120 +95,12 @@ const Button: React.FC<ButtonProps> = ({
       onClick && onClick();
     }
   };
-
-  const loadingText = () => {
-    return (
-      <React.Fragment>
-        <span>{`Loading `}</span>
-        <span className={s.dot1}>.</span>
-        <span className={s.dot2}>.</span>
-        <span className={s.dot3}>.</span>
-      </React.Fragment>
-    );
-  };
-  // dynamic button style
-  const getButtonStyles = () => {
-    let buttonColor: string;
-    let backgroundColor: string;
-    let border: string;
-    let borderRadius: string;
-    let height: string;
-
-    switch (variant) {
-      case "fill":
-        buttonColor = color;
-        backgroundColor = bgColor;
-        border = `1px solid ${bgColor}`;
-        break;
-      case "hollow":
-        buttonColor = color || bgColor;
-        backgroundColor = "transparent";
-        border = "1px solid transparent";
-        break;
-      case "line":
-        buttonColor = color || bgColor;
-        backgroundColor = "transparent";
-        border = `1px solid ${color || bgColor}`;
-        break;
-      case "dashed":
-        buttonColor = color || bgColor;
-        backgroundColor = "transparent";
-        border = `1px dashed ${color || bgColor}`;
-        break;
-      default:
-        buttonColor = color;
-        backgroundColor = bgColor;
-        border = `1px solid ${bgColor}`;
-        break;
-    }
-
-    switch (radius) {
-      case "none":
-        borderRadius = "0";
-        break;
-      case "sm":
-        borderRadius = "var(--ibst-radius-5)";
-        break;
-      case "md":
-        borderRadius = "var(--ibst-radius-10)";
-        break;
-      case "lg":
-        borderRadius = "var(--ibst-radius-15)";
-        break;
-      case "full":
-        borderRadius = "var(--ibst-radius-full)";
-        break;
-      default:
-        borderRadius = "var(--ibst-radius-10)";
-        break;
-    }
-
-    switch (size) {
-      case "reg":
-        height = "var(--ibst-pixel-50)";
-        break;
-      case "sm":
-        height = "var(--ibst-pixel-40)";
-        break;
-      default:
-        height = "var(--ibst-pixel-50)";
-        break;
-    }
-
-    return {
-      borderRadius,
-      color: buttonColor,
-      backgroundColor,
-      border,
-      height,
-    };
-  };
-  // function to darken or lighten a color
-  const handleContrastColor = (color: string, percent: number): string => {
-    const num = parseInt(color.replace("#", ""), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) + amt;
-    const B = ((num >> 8) & 0x00ff) + amt;
-    const G = (num & 0x0000ff) + amt;
-    return (
-      "#" +
-      (
-        0x1000000 +
-        (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
-        (B < 255 ? (B < 1 ? 0 : B) : 255) * 0x100 +
-        (G < 255 ? (G < 1 ? 0 : G) : 255)
-      )
-        .toString(16)
-        .slice(1)
-    );
-  };
-
   // calculate the background color
   let blockBgColor: string;
   let rippleColor: string;
 
   if (variant === "hollow" || variant === "line" || variant === "dashed") {
-    if (handleContrastColor(color, -30) === color) {
+    if (getContrastColor(color, -30) === color) {
       rippleColor = `rgba(255, 255, 255, 0.2)`;
       blockBgColor = `rgba(255, 255, 255, 0.1)`;
     } else {
@@ -213,7 +108,7 @@ const Button: React.FC<ButtonProps> = ({
       blockBgColor = `rgba(0, 0, 0, 0.1)`;
     }
   } else {
-    if (handleContrastColor(bgColor, -30) === bgColor) {
+    if (getContrastColor(bgColor, -30) === bgColor) {
       rippleColor = `rgba(255, 255, 255, 0.2)`;
       blockBgColor = `rgba(255, 255, 255, 0.1)`;
     } else {
@@ -289,202 +184,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <React.Fragment>
-      {type === "route" && to ? (
-        isTooltip === true && isTooltip ? (
-          <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={s.container}
-          >
-            {hover && (
-              <div ref={tooltipRef} className={s.tooltip}>
-                <div ref={tooltipContentRef} className={s.tooltipContent}>
-                  <div className={s.tooltipContentText}>
-                    {isLoading ? loadingText() : tooltipText}
-                  </div>
-                </div>
-              </div>
-            )}
-            <Link
-              id={id}
-              className={`${s.button} ${isFullwidth ? s.full : ""}`}
-              style={getButtonStyles()}
-              to={to}
-            >
-              {subVariant === "icon" ? (
-                <div
-                  style={{
-                    zIndex: "3",
-                    display: "flex",
-                    position: "relative",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {iconContent}
-                </div>
-              ) : (
-                <React.Fragment>
-                  {startContent && !isLoading && (
-                    <div
-                      style={{
-                        zIndex: "3",
-                        display: "flex",
-                        position: "relative",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {startContent}
-                    </div>
-                  )}
-                  {!isLoading ? (
-                    <div className={s.buttonText}>{buttonText}</div>
-                  ) : loadingContent ? (
-                    <div
-                      style={{
-                        zIndex: "3",
-                        display: "flex",
-                        position: "relative",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {loadingContent}
-                    </div>
-                  ) : (
-                    <React.Fragment>
-                      <div
-                        className={s.ringSpinner}
-                        style={{ borderTopColor: color }}
-                      ></div>
-                      <div className={s.buttonText}>{loadingText()}</div>
-                    </React.Fragment>
-                  )}
-                  {endContent && !isLoading && (
-                    <div
-                      style={{
-                        zIndex: "3",
-                        display: "flex",
-                        position: "relative",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {endContent}
-                    </div>
-                  )}
-                </React.Fragment>
-              )}
-              {isRippling && !isDisabled && !isLoading && (
-                <span
-                  className={s.buttonRipple}
-                  style={{
-                    left: coords.x,
-                    top: coords.y,
-                    backgroundColor: rippleColor,
-                  }}
-                />
-              )}
-              {!isDisabled && !isLoading && (
-                <div
-                  className={s.buttonBlock}
-                  style={{ background: blockBgColor }}
-                ></div>
-              )}
-            </Link>
-          </div>
-        ) : (
-          <Link
-            id={id}
-            className={`${s.button} ${isFullwidth ? s.full : ""}`}
-            style={getButtonStyles()}
-            to={to}
-          >
-            {subVariant === "icon" ? (
-              <div
-                style={{
-                  zIndex: "3",
-                  display: "flex",
-                  position: "relative",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {iconContent}
-              </div>
-            ) : (
-              <React.Fragment>
-                {startContent && !isLoading && (
-                  <div
-                    style={{
-                      zIndex: "3",
-                      display: "flex",
-                      position: "relative",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {startContent}
-                  </div>
-                )}
-                {!isLoading ? (
-                  <div className={s.buttonText}>{buttonText}</div>
-                ) : loadingContent ? (
-                  <div
-                    style={{
-                      zIndex: "3",
-                      display: "flex",
-                      position: "relative",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {loadingContent}
-                  </div>
-                ) : (
-                  <React.Fragment>
-                    <div
-                      className={s.ringSpinner}
-                      style={{ borderTopColor: color }}
-                    ></div>
-                    <div className={s.buttonText}>{loadingText()}</div>
-                  </React.Fragment>
-                )}
-                {endContent && !isLoading && (
-                  <div
-                    style={{
-                      zIndex: "3",
-                      display: "flex",
-                      position: "relative",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {endContent}
-                  </div>
-                )}
-              </React.Fragment>
-            )}
-            {isRippling && !isDisabled && !isLoading && (
-              <span
-                className={s.buttonRipple}
-                style={{
-                  left: coords.x,
-                  top: coords.y,
-                  backgroundColor: rippleColor,
-                }}
-              />
-            )}
-            {!isDisabled && !isLoading && (
-              <div
-                className={s.buttonBlock}
-                style={{ background: blockBgColor }}
-              ></div>
-            )}
-          </Link>
-        )
-      ) : isTooltip === true && isTooltip ? (
+      {isTooltip === true && isTooltip ? (
         <div
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -494,83 +194,52 @@ const Button: React.FC<ButtonProps> = ({
             <div ref={tooltipRef} className={s.tooltip}>
               <div ref={tooltipContentRef} className={s.tooltipContent}>
                 <div className={s.tooltipContentText}>
-                  {isLoading ? loadingText() : tooltipText}
+                  {isLoading ? <LoadingText /> : tooltipText}
                 </div>
               </div>
             </div>
           )}
-          <button
+          <ISButton
             id={id}
+            type={
+              type === "route"
+                ? "route"
+                : type === "submit"
+                ? "submit"
+                : "button"
+            }
             className={`${s.button} ${isDisabled ? s.disabled : ""} ${
               isLoading ? s.loading : ""
             } ${isFullwidth ? s.full : ""}`}
-            style={getButtonStyles()}
-            type={type === "submit" ? "submit" : "button"}
-            onClick={handleClick}
+            style={getButtonStyles(variant, radius, size, color, bgColor)}
+            to={to}
             disabled={isLoading ? true : isDisabled}
+            onCLick={handleClick}
           >
             {subVariant === "icon" ? (
-              <div
-                style={{
-                  zIndex: "3",
-                  display: "flex",
-                  position: "relative",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {iconContent}
-              </div>
+              <div className={s.buttonIcon}>{iconContent}</div>
             ) : (
               <React.Fragment>
                 {startContent && !isLoading && (
-                  <div
-                    style={{
-                      zIndex: "3",
-                      display: "flex",
-                      position: "relative",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {startContent}
-                  </div>
+                  <div className={s.buttonIcon}>{startContent}</div>
                 )}
                 {!isLoading ? (
                   <div className={s.buttonText}>{buttonText}</div>
                 ) : loadingContent ? (
-                  <div
-                    style={{
-                      zIndex: "3",
-                      display: "flex",
-                      position: "relative",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {loadingContent}
-                  </div>
+                  <div className={s.buttonIcon}>{loadingContent}</div>
                 ) : (
                   <React.Fragment>
                     <div
                       className={s.ringSpinner}
                       style={{ borderTopColor: color }}
                     ></div>
-                    <div className={s.buttonText}>{loadingText()}</div>
+                    <div className={s.buttonText}>
+                      <LoadingText />
+                    </div>
                   </React.Fragment>
                 )}
                 {endContent && !isLoading && (
-                  <div
-                    style={{
-                      zIndex: "3",
-                      display: "flex",
-                      position: "relative",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {endContent}
-                  </div>
+                  <div className={s.buttonIcon}>{endContent}</div>
                 )}
               </React.Fragment>
             )}
@@ -590,18 +259,21 @@ const Button: React.FC<ButtonProps> = ({
                 style={{ background: blockBgColor }}
               ></div>
             )}
-          </button>
+          </ISButton>
         </div>
       ) : (
-        <button
+        <ISButton
           id={id}
+          type={
+            type === "route" ? "route" : type === "submit" ? "submit" : "button"
+          }
           className={`${s.button} ${isDisabled ? s.disabled : ""} ${
             isLoading ? s.loading : ""
           } ${isFullwidth ? s.full : ""}`}
-          style={getButtonStyles()}
-          type={type === "submit" ? "submit" : "button"}
-          onClick={handleClick}
+          style={getButtonStyles(variant, radius, size, color, bgColor)}
+          to={to}
           disabled={isLoading ? true : isDisabled}
+          onCLick={handleClick}
         >
           {subVariant === "icon" ? (
             <div
@@ -650,7 +322,9 @@ const Button: React.FC<ButtonProps> = ({
                     className={s.ringSpinner}
                     style={{ borderTopColor: color }}
                   ></div>
-                  <div className={s.buttonText}>{loadingText()}</div>
+                  <div className={s.buttonText}>
+                    <LoadingText />
+                  </div>
                 </React.Fragment>
               )}
               {endContent && !isLoading && (
@@ -684,7 +358,7 @@ const Button: React.FC<ButtonProps> = ({
               style={{ background: blockBgColor }}
             ></div>
           )}
-        </button>
+        </ISButton>
       )}
     </React.Fragment>
   );
