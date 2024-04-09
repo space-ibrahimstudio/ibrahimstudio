@@ -1,3 +1,1 @@
-export { scrollView } from "./functions";
-export { toTitleCase } from "./functions";
-export { formatDate } from "./functions";
+export { scrollView, toTitleCase, formatDate } from "./functions";
