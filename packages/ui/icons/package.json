@@ -28,7 +28,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/space-ibrahimstudio/ibrahimstudio.git",
-    "directory": "packages/components/icons"
+    "directory": "packages/ui/icons"
   },
   "bugs": {
     "url": "https://github.com/space-ibrahimstudio/ibrahimstudio/issues"
