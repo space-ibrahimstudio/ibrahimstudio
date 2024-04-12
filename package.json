@@ -1,0 +1,44 @@
+{
+  "name": "ibrahimstudio",
+  "private": true,
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Ibrahim Space Studio",
+    "email": "space.ibrahimstudio@gmail.com",
+    "homepage": "https://space.ibrahimstudio.co"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/space-ibrahimstudio/ibrahimstudio"
+  },
+  "scripts": {
+    "lint": "npm run lint:cmp && npm run lint:rct && npm run lint:uis && npm run lint:utl",
+    "lint:cmp": "eslint ./packages/components/**/*.{ts,tsx}",
+    "lint:rct": "eslint ./packages/react/**/*.{ts,tsx}",
+    "lint:uis": "eslint ./packages/ui/**/*.{ts,tsx}",
+    "lint:utl": "eslint ./packages/utils/**/*.{ts,tsx}"
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
+    "rimraf": "^5.0.5",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  }
+}
