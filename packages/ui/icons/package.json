@@ -1,15 +1,14 @@
 {
   "name": "@ibrahimstudio/icons",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c && npm run clean",
-    "clean": "rimraf dist/utils",
-    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "build": "npm run clean && rollup -c",
+    "clean": "rimraf dist",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -41,21 +40,7 @@
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "@typescript-eslint/eslint-plugin": "^7.1.0",
-    "@typescript-eslint/parser": "^7.1.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rimraf": "^5.0.5",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.3"
+    "react-dom": "^18.2.0"
   }
 }

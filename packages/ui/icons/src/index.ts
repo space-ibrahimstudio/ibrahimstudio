@@ -1,1 +1,1 @@
-export { ChevronIcon } from "./icons";
+export { ISChevron, ISEyeOpen, ISEyeSlash } from "./icons";
