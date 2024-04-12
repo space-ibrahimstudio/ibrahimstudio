@@ -1,5 +1,5 @@
 import React from "react";
-import { LoadingText } from "@ibrahimstudio/contents";
+import { LoadingText } from "@ibrahimstudio/jsx";
 import s from "./tooltip.module.css";
 
 interface TooltipProps {
@@ -39,17 +39,15 @@ const Tooltip: React.FC<TooltipProps> = ({
   const updateTooltipPosition = () => {
     if (tooltipContentRef.current && tooltipRef.current) {
       const rect = tooltipContentRef.current.getBoundingClientRect();
+      const { top } = rect;
 
-      const { top, left, right } = rect;
-      const padding = 40;
-
-      if (left < 0 + padding) {
-        const newLeft = Math.abs(left) + padding;
-        tooltipContentRef.current.style.left = `${newLeft}px`;
-      } else if (right + padding > window.innerWidth) {
-        const newRight = right + padding - window.innerWidth;
-        tooltipContentRef.current.style.right = `${newRight}px`;
-      }
+      // if (left < 0 + padding) {
+      //   const newLeft = Math.abs(left) + padding;
+      //   tooltipContentRef.current.style.left = `${newLeft}px`;
+      // } else if (right + padding > window.innerWidth) {
+      //   const newRight = right + padding - window.innerWidth;
+      //   tooltipContentRef.current.style.right = `${newRight}px`;
+      // }
 
       if (top < 0) {
         tooltipRef.current.style.top = "unset";
