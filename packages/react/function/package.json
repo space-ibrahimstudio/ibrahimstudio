@@ -10,7 +10,25 @@
     "build": "npm run clean && tsc",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.css$": "jest-css-modules-transform"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.+(ts|tsx|js|jsx)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js|jsx)"
+    ]
   },
   "keywords": [
     "function",
