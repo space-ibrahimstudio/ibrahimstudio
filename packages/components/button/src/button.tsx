@@ -1,35 +1,11 @@
 import React from "react";
+import { BaseProps, ButtonProps } from "./types";
 import { LoadingText, ISButton } from "@ibrahimstudio/jsx";
 import { getButtonStyles, getContrastColor } from "@ibrahimstudio/styles";
 import s from "./button.module.css";
 
-interface ButtonProps {
-  id: string;
-  size?: "sm" | "reg";
-  type?: "button" | "submit" | "route" | "link";
-  variant?: "fill" | "hollow" | "line" | "dashed";
-  subVariant?: "reg" | "icon";
-  radius?: "none" | "sm" | "md" | "lg" | "full";
-  color?: string;
-  bgColor?: string;
-  buttonText: string;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  isNewTab?: boolean;
-  isFullwidth?: boolean;
-  isTooltip?: boolean;
-  tooltipText: string;
-  iconContent?: React.ReactNode;
-  startContent?: React.ReactNode;
-  endContent?: React.ReactNode;
-  loadingContent?: React.ReactNode;
-  onClick: () => void;
-  to: string;
-  href: string;
-}
-
-const Button: React.FC<ButtonProps> = ({
-  id = "ibrahimstudio-default-id",
+const Button = <T extends BaseProps>({
+  id,
   size = "reg",
   type = "button",
   variant = "fill",
@@ -37,13 +13,13 @@ const Button: React.FC<ButtonProps> = ({
   radius = "md",
   color = "var(--theme-color-base)",
   bgColor = "var(--theme-color-primary)",
-  buttonText = "Click Me!",
+  buttonText,
   isLoading = false,
   isDisabled = false,
-  isNewTab = true,
+  isNewTab,
   isFullwidth = false,
   isTooltip = false,
-  tooltipText = "Tooltip!",
+  tooltipText,
   iconContent,
   startContent,
   endContent,
@@ -51,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   to,
   href,
-}) => {
+}: ButtonProps<T>) => {
   const [isRippling, setIsRippling] = React.useState<boolean>(false);
   const [coords, setCoords] = React.useState<{ x: number; y: number }>({
     x: -1,
@@ -68,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (!isDisabled && !isLoading) {
+    if (isDisabled && !isLoading) {
       if (type === "button" && !to && !href) {
         handleRipple(event);
         onClick && onClick();
