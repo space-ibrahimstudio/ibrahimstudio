@@ -10,11 +10,30 @@
     "build": "npm run clean && rollup -c",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "workspaces": [
     "../../utils/*"
   ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.css$": "jest-css-modules-transform"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.+(ts|tsx|js|jsx)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js|jsx)"
+    ]
+  },
   "keywords": [
     "button",
     "react",
