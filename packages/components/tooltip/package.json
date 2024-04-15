@@ -1,6 +1,6 @@
 {
   "name": "@ibrahimstudio/tooltip",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This package provides a ready-to-use toolip component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
