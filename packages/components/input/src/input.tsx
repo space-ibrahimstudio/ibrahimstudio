@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { InputProps, baseDefaultValues, selectDefaultValues } from "./types";
+import React from "react";
+import { InputProps, baseDefault, plainDefault, selectDefault } from "./types";
 import { ISInput } from "@ibrahimstudio/jsx";
+import { useMousedown, useResize } from "@ibrahimstudio/hooks";
 import { ISChevron, ISEyeOpen, ISEyeSlash } from "@ibrahimstudio/icons";
 import { getInputStyles } from "@ibrahimstudio/styles";
 import s from "./input.module.css";
 
 const Input: React.FC<InputProps> = (props) => {
-  const inputprops = { ...baseDefaultValues, ...selectDefaultValues, ...props };
+  const input = { ...baseDefault, ...plainDefault, ...selectDefault, ...props };
   const [passwordSeen, setPasswordSeen] = React.useState<boolean>(false);
+  const [selectOpen, setSelectOpen] = React.useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = React.useState<string>("");
   const [optionsPosition, setOptionsPosition] = React.useState<
     "above" | "below"
   >("below");
-  const [selectOpen, setSelectOpen] = React.useState<boolean>(false);
   const [selectedOption, setSelectedOption] = React.useState<string | number>(
-    inputprops.value
+    input.value
   );
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const ref = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
 
@@ -24,77 +25,77 @@ const Input: React.FC<InputProps> = (props) => {
   };
 
   const renderVariant = () => {
-    switch (inputprops.variant) {
+    switch (input.variant) {
       case "input":
         return (
           <input
-            id={inputprops.id}
-            form={inputprops.formId}
+            id={input.id}
+            form={input.formId}
             className={s.inputFieldInput}
             type={
-              inputprops.type === "password"
+              input.type === "password"
                 ? passwordSeen
                   ? "text"
                   : "password"
-                : inputprops.type
+                : input.type
             }
-            name={inputprops.name}
+            name={input.name}
             placeholder={
-              inputprops.isReadonly && inputprops.value === ""
-                ? inputprops.fallbackValue
-                : inputprops.placeholder
+              input.isReadonly && input.value === ""
+                ? input.fallbackValue
+                : input.placeholder
             }
-            value={inputprops.value}
-            onChange={inputprops.onChange}
-            autoComplete={inputprops.autoComplete}
-            required={inputprops.isRequired}
-            readOnly={inputprops.isReadonly}
-            disabled={inputprops.isDisabled}
-            min={inputprops.min}
-            max={inputprops.max}
-            minLength={inputprops.minLength}
-            maxLength={inputprops.maxLength}
+            value={input.value}
+            onChange={input.onChange}
+            autoComplete={input.autoComplete}
+            required={input.isRequired}
+            readOnly={input.isReadonly}
+            disabled={input.isDisabled}
+            min={input.min}
+            max={input.max}
+            minLength={input.minLength}
+            maxLength={input.maxLength}
           />
         );
       case "select":
         const filteredOptions =
           searchTerm.length > 0
-            ? inputprops.options.filter((option) =>
+            ? input.options.filter((option) =>
                 option.label.toLowerCase().includes(searchTerm.toLowerCase())
               )
-            : inputprops.options;
+            : input.options;
 
         const handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           setSelectedOption(e.target.value);
-          inputprops.onSelect(e.target.value);
+          input.onSelect(e.target.value);
         };
 
         const handleOptionClick = (optionValue: string | number) => {
           setSelectedOption(optionValue);
-          inputprops.onSelect(optionValue);
+          input.onSelect(optionValue);
           setSelectOpen(false);
         };
 
         return (
           <React.Fragment>
             <input
-              id={inputprops.id}
-              form={inputprops.formId}
+              id={input.id}
+              form={input.formId}
               className={`${s.inputFieldInput} ${
-                inputprops.variant === "select" ? s.select : ""
+                input.variant === "select" ? s.select : ""
               }`}
-              name={inputprops.name}
+              name={input.name}
               value={
                 selectedOption === ""
-                  ? inputprops.placeholder
-                  : inputprops.options.find(
+                  ? input.placeholder
+                  : input.options.find(
                       (option) => option.value === selectedOption
-                    )?.label || inputprops.placeholder
+                    )?.label || input.placeholder
               }
               onChange={handleSelectChange}
-              required={inputprops.isRequired}
+              required={input.isRequired}
               readOnly={true}
-              disabled={inputprops.isDisabled}
+              disabled={input.isDisabled}
               onClick={() => setSelectOpen(!selectOpen)}
             />
             {selectOpen && (
@@ -104,7 +105,7 @@ const Input: React.FC<InputProps> = (props) => {
                 } ${optionsPosition === "above" ? s.above : s.below}`}
                 ref={optionsRef}
               >
-                {inputprops.isSearchable ? (
+                {input.isSearchable ? (
                   <input
                     type="text"
                     className={s.searchableInput}
@@ -122,7 +123,7 @@ const Input: React.FC<InputProps> = (props) => {
                       setSelectedOption("");
                     }}
                   >
-                    <b className={s.optionText}>{inputprops.placeholder}</b>
+                    <b className={s.optionText}>{input.placeholder}</b>
                   </div>
                 )}
                 {filteredOptions.map((option) => (
@@ -143,24 +144,24 @@ const Input: React.FC<InputProps> = (props) => {
       case "textarea":
         return (
           <textarea
-            id={inputprops.id}
-            form={inputprops.formId}
+            id={input.id}
+            form={input.formId}
             className={s.inputFieldInput}
-            name={inputprops.name}
+            name={input.name}
             placeholder={
-              inputprops.isReadonly && inputprops.value === ""
-                ? inputprops.fallbackValue
-                : inputprops.placeholder
+              input.isReadonly && input.value === ""
+                ? input.fallbackValue
+                : input.placeholder
             }
-            value={inputprops.value}
-            onChange={inputprops.onChange}
-            autoComplete={inputprops.autoComplete}
-            required={inputprops.isRequired}
-            readOnly={inputprops.isReadonly}
-            disabled={inputprops.isDisabled}
-            rows={inputprops.rows}
-            minLength={inputprops.minLength}
-            maxLength={inputprops.maxLength}
+            value={input.value}
+            onChange={input.onChange}
+            autoComplete={input.autoComplete}
+            required={input.isRequired}
+            readOnly={input.isReadonly}
+            disabled={input.isDisabled}
+            rows={input.rows}
+            minLength={input.minLength}
+            maxLength={input.maxLength}
           />
         );
       default:
@@ -168,84 +169,66 @@ const Input: React.FC<InputProps> = (props) => {
     }
   };
 
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        ref.current &&
-        !ref.current.contains(event.target as Node) &&
-        optionsRef.current &&
-        !optionsRef.current.contains(event.target as Node)
-      ) {
-        setSelectOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+  useMousedown((event: MouseEvent) => {
+    if (
+      ref.current &&
+      !ref.current.contains(event.target as Node) &&
+      optionsRef.current &&
+      !optionsRef.current.contains(event.target as Node)
+    ) {
+      setSelectOpen(false);
+    }
   }, []);
 
-  React.useEffect(() => {
-    const updateOptionsPosition = () => {
-      if (optionsRef.current && ref.current) {
-        const inputRect = ref.current.getBoundingClientRect();
+  useResize(() => {
+    if (selectOpen && optionsRef.current && ref.current) {
+      const inputRect = ref.current.getBoundingClientRect();
 
-        const spaceAbove = inputRect.top;
-        const spaceBelow = window.innerHeight - inputRect.bottom;
+      const spaceAbove = inputRect.top;
+      const spaceBelow = window.innerHeight - inputRect.bottom;
 
-        if (spaceAbove > spaceBelow) {
-          setOptionsPosition("above");
-          optionsRef.current.style.maxHeight = `${spaceAbove}px`;
-        } else {
-          setOptionsPosition("below");
-          optionsRef.current.style.maxHeight = `${spaceBelow}px`;
-        }
+      if (spaceAbove > spaceBelow) {
+        setOptionsPosition("above");
+        optionsRef.current.style.maxHeight = `${spaceAbove}px`;
+      } else {
+        setOptionsPosition("below");
+        optionsRef.current.style.maxHeight = `${spaceBelow}px`;
       }
-    };
-
-    if (selectOpen) {
-      updateOptionsPosition();
-      window.addEventListener("resize", updateOptionsPosition);
     }
-
-    return () => {
-      window.removeEventListener("resize", updateOptionsPosition);
-    };
   }, [selectOpen]);
 
   return (
     <ISInput
-      id={inputprops.id}
-      baseColor={inputprops.baseColor}
-      primaryColor={inputprops.primaryColor}
-      secondaryColor={inputprops.secondaryColor}
+      id={input.id}
+      baseColor={input.baseColor}
+      primaryColor={input.primaryColor}
+      secondaryColor={input.secondaryColor}
       className={s.inputBody}
     >
       <label
-        htmlFor={inputprops.id}
+        htmlFor={input.id}
         className={`${s.inputLabel} ${
-          inputprops.isLabeled && inputprops.labelText ? "" : s.none
+          input.isLabeled && input.labelText ? "" : s.none
         }`}
       >
-        {`${inputprops.labelText} ${inputprops.isRequired ? "*" : ""}`}
+        {`${input.labelText} ${input.isRequired ? "*" : ""}`}
       </label>
       <div
-        className={`${s.inputField} ${inputprops.errorContent ? s.error : ""} ${
-          inputprops.isReadonly ? s.readonly : ""
-        } ${inputprops.isDisabled ? s.disabled : ""} ${
-          inputprops.variant !== "textarea" ? s.plain : ""
-        } ${inputprops.variant !== "select" ? s.inputVariant : ""}`}
-        ref={inputprops.variant === "select" ? ref : undefined}
-        style={getInputStyles(inputprops.radius)}
+        className={`${s.inputField} ${input.errorContent ? s.error : ""} ${
+          input.isReadonly ? s.readonly : ""
+        } ${input.isDisabled ? s.disabled : ""} ${
+          input.variant !== "textarea" ? s.plain : ""
+        } ${input.variant !== "select" ? s.inputVariant : ""}`}
+        ref={input.variant === "select" ? ref : undefined}
+        style={getInputStyles(input.radius)}
       >
-        {inputprops.startContent && (
+        {input.startContent && (
           <div className={`${s.inputIcon} ${s.start}`}>
-            {inputprops.startContent}
+            {input.startContent}
           </div>
         )}
         {renderVariant()}
-        {inputprops.variant === "input" && inputprops.type === "password" && (
+        {input.variant === "input" && input.type === "password" && (
           <div
             className={`${s.inputIcon} ${s.password}`}
             onClick={togglePasswordSeen}
@@ -257,18 +240,18 @@ const Input: React.FC<InputProps> = (props) => {
               <ISEyeSlash
                 width="100%"
                 height="100%"
-                color={inputprops.secondaryColor}
+                color={input.secondaryColor}
               />
             ) : (
               <ISEyeOpen
                 width="100%"
                 height="100%"
-                color={inputprops.secondaryColor}
+                color={input.secondaryColor}
               />
             )}
           </div>
         )}
-        {inputprops.variant === "select" && (
+        {input.variant === "select" && (
           <div
             className={`${s.inputIcon} ${s.select} ${
               selectOpen ? s.flipped : ""
@@ -280,29 +263,24 @@ const Input: React.FC<InputProps> = (props) => {
               width="100%"
               height="100%"
               direction="down"
-              color={inputprops.secondaryColor}
+              color={input.secondaryColor}
             />
           </div>
         )}
-        {inputprops.variant === "input" &&
-          inputprops.type !== "password" &&
-          inputprops.endContent && (
-            <div className={`${s.inputIcon} ${s.end}`}>
-              {inputprops.endContent}
-            </div>
+        {input.variant === "input" &&
+          input.type !== "password" &&
+          input.endContent && (
+            <div className={`${s.inputIcon} ${s.end}`}>{input.endContent}</div>
           )}
       </div>
-      {inputprops.errorContent && (
+      {input.errorContent && (
         <h6 className={s.inputInfoText} style={{ color: "#FF6347" }}>
-          {inputprops.errorContent}
+          {input.errorContent}
         </h6>
       )}
-      {inputprops.infoContent && (
-        <h6
-          className={s.inputInfoText}
-          style={{ color: inputprops.primaryColor }}
-        >
-          {inputprops.infoContent}
+      {input.infoContent && (
+        <h6 className={s.inputInfoText} style={{ color: input.primaryColor }}>
+          {input.infoContent}
         </h6>
       )}
     </ISInput>
