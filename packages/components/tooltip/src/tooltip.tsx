@@ -1,13 +1,11 @@
 import React from "react";
-import { LoadingText } from "@ibrahimstudio/jsx";
+import { ISLoader } from "@ibrahimstudio/jsx";
 import s from "./tooltip.module.css";
 
 interface TooltipProps {
-  content: string;
+  content?: string;
   children: React.ReactNode;
   isLoading?: boolean;
-  color?: string;
-  bgColor?: string;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -19,9 +17,9 @@ const Tooltip: React.FC<TooltipProps> = ({
   const hoverTimeout = React.useRef<number | null>(null);
   const tooltipContentRef = React.useRef<HTMLDivElement | null>(null);
   const tooltipRef = React.useRef<HTMLDivElement | null>(null);
-  // delay timer for tooltip
+
   const delay: number = 500;
-  // mouse event handler for tooltip
+
   const handleMouseEnter = () => {
     hoverTimeout.current = window.setTimeout(() => {
       setHover(true);
@@ -35,19 +33,11 @@ const Tooltip: React.FC<TooltipProps> = ({
     }
     setHover(false);
   };
-  // render tooltip position
+
   const updateTooltipPosition = () => {
     if (tooltipContentRef.current && tooltipRef.current) {
       const rect = tooltipContentRef.current.getBoundingClientRect();
       const { top } = rect;
-
-      // if (left < 0 + padding) {
-      //   const newLeft = Math.abs(left) + padding;
-      //   tooltipContentRef.current.style.left = `${newLeft}px`;
-      // } else if (right + padding > window.innerWidth) {
-      //   const newRight = right + padding - window.innerWidth;
-      //   tooltipContentRef.current.style.right = `${newRight}px`;
-      // }
 
       if (top < 0) {
         tooltipRef.current.style.top = "unset";
@@ -57,7 +47,7 @@ const Tooltip: React.FC<TooltipProps> = ({
       }
     }
   };
-  // effect to handle tooltip resizing
+
   React.useEffect(() => {
     const handleResize = () => {
       if (hover) {
@@ -82,7 +72,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         <div ref={tooltipRef} className={s.tooltip}>
           <div ref={tooltipContentRef} className={s.tooltipContent}>
             <div className={s.tooltipContentText}>
-              {isLoading ? <LoadingText /> : content}
+              {isLoading ? <ISLoader /> : content}
             </div>
           </div>
         </div>
