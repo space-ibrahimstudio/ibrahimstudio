@@ -1,68 +1,35 @@
 import React from "react";
-import { BaseProps, ButtonProps } from "./types";
-import { LoadingText, ISButton } from "@ibrahimstudio/jsx";
+import { Link } from "react-router-dom";
+import { ButtonProps, baseDefault } from "./types";
+import { ISLoader, ISRipple } from "@ibrahimstudio/jsx";
+import { useHandler, useRipple } from "@ibrahimstudio/hooks";
+import { Tooltip } from "@ibrahimstudio/tooltip";
 import { getButtonStyles, getContrastColor } from "@ibrahimstudio/styles";
 import s from "./button.module.css";
 
-const Button = <T extends BaseProps>({
-  id,
-  size = "reg",
-  type = "button",
-  variant = "fill",
-  subVariant = "reg",
-  radius = "md",
-  color = "var(--theme-color-base)",
-  bgColor = "var(--theme-color-primary)",
-  buttonText,
-  isLoading = false,
-  isDisabled = false,
-  isNewTab,
-  isFullwidth = false,
-  isTooltip = false,
-  tooltipText,
-  iconContent,
-  startContent,
-  endContent,
-  loadingContent,
-  onClick,
-  to,
-  href,
-}: ButtonProps<T>) => {
+const Button: React.FC<ButtonProps> = (props) => {
+  const button = { ...baseDefault, ...props };
   const [isRippling, setIsRippling] = React.useState<boolean>(false);
   const [coords, setCoords] = React.useState<{ x: number; y: number }>({
     x: -1,
     y: -1,
   });
 
-  const handleRipple = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    setCoords({ x: event.clientX - rect.left, y: event.clientY - rect.top });
-  };
-
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (isDisabled && !isLoading) {
-      if (type === "button" && !to && !href) {
-        handleRipple(event);
-        onClick && onClick();
-      } else if (
-        (type === "route" && to) ||
-        (type === "submit" && !to && !href && !onClick)
-      ) {
-        handleRipple(event);
-      } else if (type === "link" && href && !to && !onClick) {
-        handleRipple(event);
-        if (!isNewTab) {
-          window.location.href = href;
+    if (!button.isDisabled && !button.isLoading) {
+      useRipple(event, setCoords);
+      if (button.type === "button") {
+        button.onClick();
+      } else if (button.type === "route" || button.type === "submit") {
+        return;
+      } else if (button.type === "link") {
+        if (!button.isNewTab) {
+          window.location.href = button.href;
         } else {
-          window.open(href, "_blank");
+          window.open(button.href, "_blank");
         }
-      } else {
-        handleRipple(event);
-        onClick && onClick();
       }
     }
   };
@@ -70,8 +37,12 @@ const Button = <T extends BaseProps>({
   let blockBgColor: string;
   let rippleColor: string;
 
-  if (variant === "hollow" || variant === "line" || variant === "dashed") {
-    if (getContrastColor(color, -30) === color) {
+  if (
+    button.variant === "hollow" ||
+    button.variant === "line" ||
+    button.variant === "dashed"
+  ) {
+    if (getContrastColor(button.color, -30) === button.color) {
       rippleColor = `rgba(255, 255, 255, 0.2)`;
       blockBgColor = `rgba(255, 255, 255, 0.1)`;
     } else {
@@ -79,7 +50,7 @@ const Button = <T extends BaseProps>({
       blockBgColor = `rgba(0, 0, 0, 0.1)`;
     }
   } else {
-    if (getContrastColor(bgColor, -30) === bgColor) {
+    if (getContrastColor(button.bgColor, -30) === button.bgColor) {
       rippleColor = `rgba(255, 255, 255, 0.2)`;
       blockBgColor = `rgba(255, 255, 255, 0.1)`;
     } else {
@@ -88,89 +59,93 @@ const Button = <T extends BaseProps>({
     }
   }
 
-  const fallbackLoading = (
-    <React.Fragment>
-      <div className={s.ringSpinner} style={{ borderTopColor: color }}></div>
-      <b className={s.buttonText}>
-        <LoadingText />
-      </b>
-    </React.Fragment>
-  );
-
-  React.useEffect(() => {
-    const handleRippling = () => {
-      if (coords.x !== -1 && coords.y !== -1) {
-        setIsRippling(true);
-        setTimeout(() => setIsRippling(false), 300);
-      } else {
-        setIsRippling(false);
-      }
-    };
-
-    handleRippling();
+  useHandler(() => {
+    if (coords.x !== -1 && coords.y !== -1) {
+      setIsRippling(true);
+      setTimeout(() => setIsRippling(false), 300);
+    } else {
+      setIsRippling(false);
+    }
   }, [coords]);
 
-  React.useEffect(() => {
+  useHandler(() => {
     if (!isRippling) {
       setCoords({ x: -1, y: -1 });
     }
   }, [isRippling]);
 
-  return (
-    <ISButton
-      id={id}
-      type={
-        type === "route" ? "route" : type === "submit" ? "submit" : "button"
-      }
-      className={`${s.button} ${isDisabled ? s.disabled : ""} ${
-        isLoading ? s.loading : ""
-      } ${isFullwidth ? s.full : ""}`}
-      style={getButtonStyles(variant, radius, size, color, bgColor)}
-      to={to}
-      disabled={isLoading || isDisabled}
-      onCLick={handleClick}
-      isTooltip={isTooltip}
-      tooltipText={tooltipText}
-      isLoading={isLoading}
-    >
-      {subVariant === "icon" ? (
-        <div className={s.buttonIcon}>{iconContent}</div>
-      ) : (
-        <React.Fragment>
-          {startContent && !isLoading && (
-            <div className={s.buttonIcon}>{startContent}</div>
-          )}
-          {isLoading ? (
-            loadingContent ? (
-              <div className={s.buttonIcon}>{loadingContent}</div>
-            ) : (
-              fallbackLoading
-            )
+  const renderButton = () => {
+    const buttonElement = (
+      <button
+        id={button.id}
+        type={button.type === "submit" ? "submit" : "button"}
+        className={`${s.button} ${button.isDisabled ? s.disabled : ""} ${
+          button.isLoading ? s.loading : ""
+        } ${button.isFullwidth ? s.full : ""}`}
+        style={getButtonStyles(
+          button.variant,
+          button.radius,
+          button.size,
+          button.color,
+          button.bgColor
+        )}
+        disabled={button.isLoading || button.isDisabled}
+        onClick={handleClick}
+      >
+        {button.subVariant === "icon" ? (
+          button.isLoading ? (
+            <div className={s.buttonIcon}>
+              <ISLoader subVariant="icon" color={button.color} />
+            </div>
           ) : (
-            <b className={s.buttonText}>{buttonText}</b>
-          )}
-          {endContent && !isLoading && (
-            <div className={s.buttonIcon}>{endContent}</div>
-          )}
-        </React.Fragment>
+            <div className={s.buttonIcon}>{button.iconContent}</div>
+          )
+        ) : (
+          <React.Fragment>
+            {button.startContent && !button.isLoading && (
+              <div className={s.buttonIcon}>{button.startContent}</div>
+            )}
+            {button.isLoading ? (
+              button.loadingContent ? (
+                <div className={s.buttonIcon}>{button.loadingContent}</div>
+              ) : (
+                <div className={s.buttonText}>
+                  <ISLoader subVariant="reg" color={button.color} />
+                </div>
+              )
+            ) : (
+              <b className={s.buttonText}>{button.buttonText}</b>
+            )}
+            {button.endContent && !button.isLoading && (
+              <div className={s.buttonIcon}>{button.endContent}</div>
+            )}
+          </React.Fragment>
+        )}
+        {isRippling && <ISRipple coords={coords} color={rippleColor} />}
+        {!button.isDisabled && !button.isLoading && (
+          <div
+            className={s.buttonBlock}
+            style={{ background: blockBgColor }}
+          ></div>
+        )}
+      </button>
+    );
+
+    return button.type === "route" ? (
+      <Link to={button.to}>{buttonElement}</Link>
+    ) : (
+      buttonElement
+    );
+  };
+
+  return (
+    <React.Fragment>
+      {button.isTooltip && !button.isFullwidth ? (
+        <Tooltip content={button.tooltipText}>{renderButton()}</Tooltip>
+      ) : (
+        renderButton()
       )}
-      {isRippling && (
-        <span
-          className={s.buttonRipple}
-          style={{
-            left: coords.x,
-            top: coords.y,
-            backgroundColor: rippleColor,
-          }}
-        />
-      )}
-      {!isDisabled && !isLoading && (
-        <div
-          className={s.buttonBlock}
-          style={{ background: blockBgColor }}
-        ></div>
-      )}
-    </ISButton>
+    </React.Fragment>
   );
 };
 
