@@ -1,34 +1,15 @@
 {
   "name": "@ibrahimstudio/function",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "This function package provides useful functions for handling common tasks in React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && rollup -c",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm run build",
-    "test": "jest"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "^.+\\.css$": "jest-css-modules-transform"
-    },
-    "testMatch": [
-      "**/__tests__/**/*.+(ts|tsx|js|jsx)",
-      "**/?(*.)+(spec|test).+(ts|tsx|js|jsx)"
-    ]
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "function",

@@ -1,4 +1,5 @@
 import { scrollView, toTitleCase, formatDate } from "../src/functions";
+import "@testing-library/jest-dom";
 
 describe("scrollView", () => {
   // Mocking document and window for testing

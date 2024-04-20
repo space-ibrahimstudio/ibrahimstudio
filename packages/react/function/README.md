@@ -1,8 +1,15 @@
-# @ibrahimstudio/function
+<div align="center">
+    <img width="20%" src="https://raw.githubusercontent.com/space-ibrahimstudio/ibrahimstudio/master/public/image/iss-logo.png" alt="@ibrahimstudio/function" />
+    <div align="center">
+      <h1>@ibrahimstudio/function</h1>
+      <h3>by: Ibrahim Space Studio</h3>
+      <p>This package provides useful JavaScript functions for handling events and string manipulations.</p>
+    </div>
+</div>
 
-This package provides useful JavaScript functions for handling events and string manipulations.
+---
 
-## Installation
+## 1. Installation
 
 You can install this package via npm:
 
@@ -12,11 +19,11 @@ npm i @ibrahimstudio/function
 yarn add @ibrahimstudio/function
 ```
 
-## Usage
+## 2. Usage
 
-### 1. `scrollView`
+### 2.1. `scrollView` function
 
-The `scrollView` function allows you to smoothly scroll to a specific element on the page.
+A lightweight utility function to smoothly scroll to a specified element on the page.
 
 ```javascript
 import { scrollView } from "@ibrahimstudio/function";
@@ -36,20 +43,11 @@ const Homepage = () => {
 };
 ```
 
-### scrollView Props
-
-| Attribute | Type                | Description                                          | Default |
-| --------- | ------------------- | ---------------------------------------------------- | ------- |
-| `offset`  | _number_ (required) | The offset from the top of the element to scroll to. | -       |
-| `id`      | _string_ (required) | The ID of the element to scroll to.                  | -       |
-
-> Note: If the `offset` has no value, fill it with `0`
-
 ---
 
-### 2. `toTitleCase`
+### 2.2. `toTitleCase` function
 
-The `toTitleCase` function converts a string to title case.
+A simple npm package that converts a string to title case.
 
 ```javascript
 import { toTitleCase } from "@ibrahimstudio/function";
@@ -59,13 +57,48 @@ const title = toTitleCase("hello world");
 console.log(title); // Output: "Hello World"
 ```
 
-### toTitleCase Props
+---
 
-| Attribute | Type                | Description                          | Default |
-| --------- | ------------------- | ------------------------------------ | ------- |
-| `str`     | _string_ (required) | The string to convert to title Case. | -       |
+### 2.3. `formatDate` function
+
+A simple npm package for formatting dates using the Intl.DateTimeFormat API.
+
+```javascript
+import { formatDate } from "@ibrahimstudio/function";
+
+// Format a date string
+const formattedDate = formatDate("2024-04-20T12:00:00", "en-US");
+console.log(formattedDate);
+// Output: April 20, 2024, 12:00 PM
+```
+
+## 3. API
+
+### 3.1. `scrollView` Props
+
+| Attribute | Type                | Description                                              | Default |
+| --------- | ------------------- | -------------------------------------------------------- | ------- |
+| `offset`  | _number_ (required) | The offset in pixels from the top of the target element. | -       |
+| `id`      | _string_ (required) | The id of the target element to scroll to.               | -       |
+
+> Note: If the `offset` has no value, fill it with `0`
 
 ---
+
+### 3.2. `toTitleCase` Props
+
+| Attribute | Type                | Description                                     | Default |
+| --------- | ------------------- | ----------------------------------------------- | ------- |
+| `str`     | _string_ (required) | The input string to be converted to title case. | -       |
+
+---
+
+### 3.3. `formatDate` Props
+
+| Attribute    | Type                | Description                       | Default |
+| ------------ | ------------------- | --------------------------------- | ------- |
+| `dateString` | _string_ (required) | A string representing the date.   | -       |
+| `locale`     | _string_            | The locale to use for formatting. | _en-US_ |
 
 ## Contributing
 
