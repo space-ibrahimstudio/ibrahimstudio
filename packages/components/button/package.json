@@ -9,32 +9,12 @@
   "scripts": {
     "build": "npm run clean && rollup -c",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm run build",
-    "test": "jest"
+    "prepublishOnly": "npm run build"
   },
   "workspaces": [
     "../../utils/*",
     "../../components/*"
   ],
-  "jest": {
-    "testEnvironment": "jsdom",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "^.+\\.css$": "jest-css-modules-transform"
-    },
-    "testMatch": [
-      "**/__tests__/**/*.+(ts|tsx|js|jsx)",
-      "**/?(*.)+(spec|test).+(ts|tsx|js|jsx)"
-    ]
-  },
   "keywords": [
     "button",
     "react",

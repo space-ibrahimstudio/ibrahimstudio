@@ -1,6 +1,6 @@
 {
   "name": "@ibrahimstudio/input",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "This package provides a customizable input component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -9,8 +9,7 @@
   "scripts": {
     "build": "npm run clean && rollup -c",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublishOnly": "npm run build"
   },
   "workspaces": [
     "../../utils/*",
