@@ -9,7 +9,8 @@ test("Button with onClick prop calls onClick handler", () => {
   const { getByText } = render(
     <Button
       id="test-onclick"
-      buttonText="OnClick Button"
+      type="button"
+      buttonText="onClick Button"
       onClick={mockOnClick}
     />
   );
@@ -21,7 +22,12 @@ test("Button with onClick prop calls onClick handler", () => {
 
 test("Button renders with correct type based on prop", () => {
   const { getByText } = render(
-    <Button id="test-submit" type="submit" buttonText="Submit Button" />
+    <Button
+      id="test-submit"
+      formId="test-form-submit"
+      type="submit"
+      buttonText="Submit Button"
+    />
   );
 
   const button = getByText("Submit Button");
@@ -49,7 +55,13 @@ test("Button renders with correct type based on prop", () => {
 
 test("Button renders disabled when isDisabled prop is true", () => {
   const { getByText } = render(
-    <Button id="test-disabled" buttonText="Disabled Button" isDisabled={true} />
+    <Button
+      id="test-disabled"
+      type="button"
+      buttonText="Disabled Button"
+      isDisabled={true}
+      onClick={() => {}}
+    />
   );
 
   const button = getByText("Disabled Button");
