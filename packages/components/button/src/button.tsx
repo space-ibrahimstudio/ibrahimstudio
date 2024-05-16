@@ -1,19 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ButtonProps, baseDefault } from "./types";
-import { CustomCSSProperties, ISLoader, ISRipple } from "@ibrahimstudio/jsx";
+import { ISLoader, ISRipple } from "@ibrahimstudio/jsx";
 import { useHandler, useRipple } from "@ibrahimstudio/hooks";
 import { Tooltip } from "@ibrahimstudio/tooltip";
-import { getButtonStyles, getMonochromeColor } from "@ibrahimstudio/styles";
+import { CustomCSSProperties, getButtonStyles, getMonochromeColor } from "@ibrahimstudio/styles";
 import s from "./button.module.css";
 
 const Button: React.FC<ButtonProps> = (props) => {
   const button = { ...baseDefault, ...props };
   const [isRippling, setIsRippling] = React.useState<boolean>(false);
-  const [coords, setCoords] = React.useState<{ x: number; y: number }>({
-    x: -1,
-    y: -1,
-  });
+  const [coords, setCoords] = React.useState<{ x: number; y: number }>({ x: -1, y: -1 });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!button.isDisabled && !button.isLoading) {
