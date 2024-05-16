@@ -1,7 +1,7 @@
 import React from "react";
 import { InputProps, baseDefault, plainDefault, selectDefault } from "./types";
 import { Button } from "@ibrahimstudio/button";
-import { useMousedown, useResize } from "@ibrahimstudio/hooks";
+import { useMousedown, useResize, useHandler } from "@ibrahimstudio/hooks";
 import { ISChevron, ISEyeOpen, ISEyeSlash, ISUpload, ISCheck, ISTrash } from "@ibrahimstudio/icons";
 import { CustomCSSProperties, getInputStyles, getMonochromeColor } from "@ibrahimstudio/styles";
 import s from "./input.module.css";
@@ -150,6 +150,8 @@ const Input: React.FC<InputProps> = (props) => {
           />
         );
       case "upload":
+        const fallbackimg = "https://raw.githubusercontent.com/space-ibrahimstudio/ibrahimstudio/master/public/image/fallback.jpg";
+        const imgsrc = imagePreview ? (imagePreview !== "" ? imagePreview : fallbackimg) : fallbackimg;
         const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const file = e.target.files?.[0];
           if (file) {
@@ -227,7 +229,7 @@ const Input: React.FC<InputProps> = (props) => {
                 onChange={handleImageChange}
               />
             </div>
-            {imagePreview && <img className={s.uploadImage} src={imagePreview} alt="Upload Image Preview" loading="lazy" />}
+            <img className={s.uploadImage} src={imgsrc} alt="Upload Image Preview" loading="lazy" />
           </React.Fragment>
         );
       default:
@@ -235,7 +237,7 @@ const Input: React.FC<InputProps> = (props) => {
     }
   };
 
-  React.useEffect(() => {
+  useHandler(() => {
     if (input.variant === "upload") {
       setImagePreview(input.initialFile);
     } else {
