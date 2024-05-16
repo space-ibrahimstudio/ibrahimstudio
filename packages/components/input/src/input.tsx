@@ -1,9 +1,9 @@
 import React from "react";
 import { InputProps, baseDefault, plainDefault, selectDefault } from "./types";
-import { ISInput } from "@ibrahimstudio/jsx";
+import { Button } from "@ibrahimstudio/button";
 import { useMousedown, useResize } from "@ibrahimstudio/hooks";
-import { ISChevron, ISEyeOpen, ISEyeSlash } from "@ibrahimstudio/icons";
-import { getInputStyles } from "@ibrahimstudio/styles";
+import { ISChevron, ISEyeOpen, ISEyeSlash, ISUpload, ISCheck, ISTrash } from "@ibrahimstudio/icons";
+import { CustomCSSProperties, getInputStyles, getMonochromeColor } from "@ibrahimstudio/styles";
 import s from "./input.module.css";
 
 const Input: React.FC<InputProps> = (props) => {
@@ -12,9 +12,26 @@ const Input: React.FC<InputProps> = (props) => {
   const [selectOpen, setSelectOpen] = React.useState<boolean>(false);
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const [optionsPosition, setOptionsPosition] = React.useState<"above" | "below">("below");
-  const [selectedOption, setSelectedOption] = React.useState<string | number>(input.value);
+  const [selectedOption, setSelectedOption] =
+    input.variant === "input" ? React.useState<string | number>(input.value) : React.useState<string | number>("");
+  const [imagePreview, setImagePreview] =
+    input.variant === "upload" ? React.useState<string | null>(input.initialFile) : React.useState<string | null>(null);
   const ref = React.useRef<HTMLDivElement>(null);
   const optionsRef = React.useRef<HTMLDivElement>(null);
+  const inputFileRef = React.useRef<HTMLInputElement>(null);
+
+  const inputCSSProperties: CustomCSSProperties = {
+    "--ibst-color-base": input.baseColor,
+    "--ibst-color-base-10": getMonochromeColor(input.baseColor, 0.1),
+    "--ibst-color-base-50": getMonochromeColor(input.baseColor, 0.5),
+    "--ibst-color-primary": input.primaryColor,
+    "--ibst-color-primary-5": getMonochromeColor(input.primaryColor, 0.05),
+    "--ibst-color-primary-20": getMonochromeColor(input.primaryColor, 0.2),
+    "--ibst-color-secondary": input.secondaryColor,
+    "--ibst-color-secondary-5": getMonochromeColor(input.secondaryColor, 0.05),
+    "--ibst-color-secondary-15": getMonochromeColor(input.secondaryColor, 0.15),
+    "--ibst-color-secondary-50": getMonochromeColor(input.secondaryColor, 0.5),
+  };
 
   const togglePasswordSeen = () => {
     setPasswordSeen(!passwordSeen);
@@ -132,10 +149,99 @@ const Input: React.FC<InputProps> = (props) => {
             maxLength={input.maxLength}
           />
         );
+      case "upload":
+        const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            if (input.maxSize && file.size > input.maxSize) {
+              input.errorContent = `File size exceeds the maximum limit of ${input.maxSize / (1024 * 1024)} MB`;
+              if (inputFileRef.current) {
+                inputFileRef.current.value = "";
+              }
+              setImagePreview(null);
+              input.onSelect(null);
+            } else {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+                input.onSelect(file);
+              };
+              reader.readAsDataURL(file);
+            }
+          }
+        };
+
+        const triggerFileUpload = () => {
+          if (inputFileRef.current) {
+            inputFileRef.current.click();
+          }
+        };
+
+        const clearImage = () => {
+          setImagePreview(null);
+          input.onSelect(null);
+          if (inputFileRef.current) {
+            inputFileRef.current.value = "";
+          }
+        };
+
+        return (
+          <React.Fragment>
+            <div className={s.uploadBorder}>
+              {input.note && (
+                <div className={s.uploadNote}>
+                  <span className={s.noteText}>{input.note}</span>
+                </div>
+              )}
+              <div className={s.uploadAction}>
+                <Button
+                  id={imagePreview ? `${input.id}-replace` : `${input.id}-upload`}
+                  type="button"
+                  size="sm"
+                  variant={imagePreview ? "line" : "fill"}
+                  color={imagePreview ? "#fff" : "var(--ibst-color-base)"}
+                  bgColor={imagePreview ? "transparent" : "var(--ibst-color-primary)"}
+                  buttonText={imagePreview ? "Upload Another Image" : "Upload Image"}
+                  startContent={imagePreview ? <ISCheck /> : <ISUpload />}
+                  onClick={triggerFileUpload}
+                />
+                {imagePreview && (
+                  <Button
+                    id={`${input.id}-remove`}
+                    type="button"
+                    size="sm"
+                    variant="line"
+                    subVariant="icon"
+                    color="#fff"
+                    iconContent={<ISTrash />}
+                    onClick={clearImage}
+                  />
+                )}
+              </div>
+              <input
+                id={`${input.id}-input`}
+                ref={inputFileRef}
+                className={s.uploadInput}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </div>
+            {imagePreview && <img className={s.uploadImage} src={imagePreview} alt="Upload Image Preview" loading="lazy" />}
+          </React.Fragment>
+        );
       default:
         return null;
     }
   };
+
+  React.useEffect(() => {
+    if (input.variant === "upload") {
+      setImagePreview(input.initialFile);
+    } else {
+      setImagePreview(null);
+    }
+  }, [input.variant, input.variant === "upload" ? input.initialFile : null]);
 
   useMousedown((event: MouseEvent) => {
     if (ref.current && !ref.current.contains(event.target as Node) && optionsRef.current && !optionsRef.current.contains(event.target as Node)) {
@@ -161,24 +267,19 @@ const Input: React.FC<InputProps> = (props) => {
   }, [selectOpen]);
 
   return (
-    <ISInput
-      id={input.id}
-      baseColor={input.baseColor}
-      primaryColor={input.primaryColor}
-      secondaryColor={input.secondaryColor}
-      className={s.inputBody}
-    >
+    <section id={input.id} className={s.inputBody} style={inputCSSProperties}>
       <label htmlFor={input.id} className={`${s.inputLabel} ${input.isLabeled && input.labelText ? "" : s.none}`}>
         {`${input.labelText} ${input.isRequired ? "*" : ""}`}
       </label>
       <div
-        className={`${s.inputField} ${input.errorContent ? s.error : ""} ${input.isReadonly ? s.readonly : ""} ${
-          input.isDisabled ? s.disabled : ""
-        } ${input.variant !== "textarea" ? s.plain : ""} ${input.variant !== "select" ? s.inputVariant : ""}`}
+        className={`${s.inputField}
+        ${input.errorContent ? s.error : ""} ${input.isReadonly ? s.readonly : ""}${input.isDisabled ? s.disabled : ""}
+        ${input.variant !== "textarea" ? (input.variant !== "upload" ? s.plain : s.upload) : ""}
+        ${input.variant !== "select" ? s.inputVariant : ""}`}
         ref={input.variant === "select" ? ref : undefined}
         style={getInputStyles(input.radius)}
       >
-        {input.startContent && <div className={`${s.inputIcon} ${s.start}`}>{input.startContent}</div>}
+        {input.variant !== "upload" && input.startContent && <div className={`${s.inputIcon} ${s.start}`}>{input.startContent}</div>}
         {renderVariant()}
         {input.variant === "input" && input.type === "password" && (
           <div
@@ -218,7 +319,7 @@ const Input: React.FC<InputProps> = (props) => {
           {input.infoContent}
         </h6>
       )}
-    </ISInput>
+    </section>
   );
 };
 

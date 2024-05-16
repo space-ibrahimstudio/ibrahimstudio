@@ -1,6 +1,6 @@
 {
   "name": "@ibrahimstudio/input",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "This package provides a customizable input component for React applications.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -45,10 +45,9 @@
   },
   "devDependencies": {
     "@ibrahimstudio/icons": "workspace:*",
-    "@ibrahimstudio/jsx": "workspace:*",
     "@ibrahimstudio/styles": "workspace:*",
-    "@ibrahimstudio/tooltip": "workspace:*",
     "@ibrahimstudio/hooks": "workspace:*",
+    "@ibrahimstudio/button": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
