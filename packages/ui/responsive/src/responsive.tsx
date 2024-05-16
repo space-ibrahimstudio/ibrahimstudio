@@ -27,10 +27,7 @@ const ISResponsive: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
         const propKey = key as keyof React.CSSProperties;
         const styleValue = styles[propKey];
         if (typeof styleValue === "string" && styleValue.includes("px")) {
-          (processedStyles as any)[propKey] = usePixelConverter(
-            styleValue,
-            deviceType
-          );
+          (processedStyles as any)[propKey] = usePixelConverter(styleValue, deviceType);
         } else {
           (processedStyles as any)[propKey] = styleValue;
         }
@@ -46,11 +43,7 @@ const ISResponsive: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
           ...child.props,
           style: processStyles(child.props.style || {}),
         };
-        return React.cloneElement(
-          child,
-          updatedProps,
-          executeChildren(child.props.children)
-        );
+        return React.cloneElement(child, updatedProps, executeChildren(child.props.children));
       }
       return child;
     });

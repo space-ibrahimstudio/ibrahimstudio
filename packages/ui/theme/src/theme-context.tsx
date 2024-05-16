@@ -12,23 +12,15 @@ interface ThemeContextType {
   setThemeConfig: (themeConfig: Theme) => void;
 }
 
-const ThemeContext = React.createContext<ThemeContextType | undefined>(
-  undefined
-);
+const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
 
-export const ISThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const ISThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = React.useState<Theme | null>(null);
   const setThemeConfig = (themeConfig: Theme) => {
     setTheme(themeConfig);
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, setThemeConfig }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, setThemeConfig }}>{children}</ThemeContext.Provider>;
 };
 
 export const useTheme = (): ThemeContextType => {
