@@ -56,7 +56,9 @@ const Button: React.FC<ButtonProps> = (props) => {
         type={button.type === "submit" ? "submit" : "button"}
         data-action={button.action}
         name={button.name}
-        className={`${s.button} ${button.isDisabled ? s.disabled : ""} ${button.isLoading ? s.loading : ""} ${button.isFullwidth ? s.full : ""}`}
+        className={`${s.button} ${button.subVariant === "icon" ? s.icon : ""} ${button.isDisabled ? s.disabled : ""} ${
+          button.isLoading ? s.loading : ""
+        } ${button.isFullwidth ? s.full : ""}`}
         style={{ ...getButtonStyles(button.variant, button.radius, button.size, button.color, button.bgColor), ...buttonCSSProperties }}
         disabled={button.isLoading || button.isDisabled}
         onClick={handleClick}
