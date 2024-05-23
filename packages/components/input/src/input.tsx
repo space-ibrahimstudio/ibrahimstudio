@@ -230,7 +230,7 @@ const Input: React.FC<InputProps> = (props) => {
                       type="button"
                       size="sm"
                       variant={currentImage ? "line" : "fill"}
-                      color={currentImage ? "#fff" : "var(--ibst-color-base)"}
+                      color={currentImage ? "#ffffff" : "var(--ibst-color-base)"}
                       bgColor={currentImage ? "transparent" : "var(--ibst-color-primary)"}
                       buttonText={currentImage ? "Upload Another Image" : "Upload Image"}
                       startContent={currentImage ? <ISCheck /> : <ISUpload />}
