@@ -64,3 +64,12 @@ export const useEvent = (): Pick<ContextProps, "scroll"> => {
   const { scroll } = context;
   return { scroll };
 };
+
+export const useWindow = (): Pick<ContextProps, "width" | "height"> => {
+  const context = useContext(ISContext);
+  if (context === undefined) {
+    throw new Error("useWindow must be used within IbrahimStudioProvider");
+  }
+  const { width, height } = context;
+  return { width, height };
+};
