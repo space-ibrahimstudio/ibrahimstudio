@@ -354,11 +354,14 @@ const Input: React.FC<InputProps> = (props) => {
   }, [selectOpen]);
 
   return (
-    <section id={input.id} className={s.inputBody} style={inputCSSProperties}>
+    <section
+      id={input.id}
+      className={`${s.inputBody} ${input.errorContent ? s.error : ""} ${input.isReadonly ? s.readonly : ""} ${input.isDisabled ? s.disabled : ""}`}
+      style={inputCSSProperties}
+    >
       <label htmlFor={input.id} className={`${s.inputLabel} ${input.isLabeled && input.labelText ? "" : s.none}`}>
         <span>{input.labelText}</span>
-        {input.isRequired && <span style={{ color: "#FF6347" }}>*</span>}
-        {input.isReadonly && <span style={{ opacity: "0.5" }}>(read only)</span>}
+        {input.isRequired && <span style={{ color: "#FF6347" }}>{` *`}</span>}
       </label>
       <div
         className={`${s.inputField}
