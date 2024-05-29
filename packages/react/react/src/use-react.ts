@@ -47,13 +47,13 @@ export const useCounter = (): Pick<ContextProps, "count" | "increment" | "decrem
   return { count, increment, decrement, reset };
 };
 
-export const useFormat = (): Pick<ContextProps, "newDate"> => {
+export const useFormat = (): Pick<ContextProps, "newDate" | "newPrice"> => {
   const context = useContext(ISContext);
   if (context === undefined) {
     throw new Error("useFormat must be used within IbrahimStudioProvider");
   }
-  const { newDate } = context;
-  return { newDate };
+  const { newDate, newPrice } = context;
+  return { newDate, newPrice };
 };
 
 export const useEvent = (): Pick<ContextProps, "scroll"> => {

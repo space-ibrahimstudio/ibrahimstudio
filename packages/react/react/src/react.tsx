@@ -75,6 +75,18 @@ const IbrahimStudioProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
     return date.toLocaleDateString(locale, options);
   };
+  // function to format price into locale values
+  const newPrice = (amount: string | number, locale: string = "id-ID", currency: string = "IDR"): string => {
+    const number = Number(amount);
+    if (isNaN(number)) return "Invalid amount";
+    const formattedNumber = new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currency,
+      minimumFractionDigits: 0,
+    }).format(number);
+
+    return formattedNumber;
+  };
   // start function to detect online status
   const [isOnline, setIsOnline] = React.useState<boolean>(window.navigator.onLine);
 
@@ -134,6 +146,7 @@ const IbrahimStudioProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     pixel,
     scroll,
     newDate,
+    newPrice,
     isOnline,
     count,
     increment,
